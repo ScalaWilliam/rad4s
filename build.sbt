@@ -67,3 +67,12 @@ scalacOptions in ThisBuild ++= Seq(
 )
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
+
+lazy val `http4s-resource-servlet` = project
+  .settings(
+    name := "rad4s-http4s-resource-servlet",
+    libraryDependencies ++= Seq(
+      "org.http4s"    %% "http4s-servlet"   % "0.21.4",
+      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
+    )
+  )

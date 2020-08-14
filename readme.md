@@ -13,7 +13,7 @@
 - Direct file streaming adapter
     - TSV-based
 - Method-to-map-of-functions adapter for rapid development (`mage`)
-- http4s-servlet enhancement
+- http4s-servlet enhancement (`http4s-resource-servlet`)
 - shapeless-based type-class to get case class field names automatically (`field-names`)
 
 ## `mage`
