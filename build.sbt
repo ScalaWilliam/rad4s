@@ -14,3 +14,4 @@ inThisBuild(List(
     )
   )
 ))
+skip in publish := true
