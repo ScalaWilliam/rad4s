@@ -10,6 +10,7 @@ before_install:
   - export CI_SONATYPE_RELEASE="; sonatypePrepare; sonatypeBundleUpload"
 stages:
   - name: test
+    if: tag IS blank
   - name: release
     if: branch = master
 jobs:
