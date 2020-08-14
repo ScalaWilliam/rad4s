@@ -15,3 +15,8 @@ jobs:
       script: sbt test
     - stage: release
       script: sbt ci-release
+cache:
+  directories:
+    - $HOME/.cache/coursier
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
