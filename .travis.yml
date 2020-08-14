@@ -5,7 +5,7 @@ jdk:
   - oraclejdk11
 before_install:
   - git fetch origin --tags
-  - git tags
+  - git tag
 stages:
   - name: test
   - name: release
