@@ -1,8 +1,8 @@
-package com.scalawilliam.mage
+package com.scalawilliam.rad4s.mage
 
-import org.scalatest.funsuite.AnyFunSuite
-import MageSuite._
 import cats.effect.IO
+import com.scalawilliam.rad4s.mage.MageSuite._
+import org.scalatest.funsuite.AnyFunSuite
 
 object MageSuite {
 

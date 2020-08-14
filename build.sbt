@@ -28,6 +28,12 @@ lazy val mage = project
     initialCommands in console := """import com.scalawilliam.mage._"""
   )
 
+lazy val `field-names` = project
+  .settings(
+    name := "rad4s-field-names",
+    libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
+  )
+
 scalacOptions in ThisBuild ++= Seq(
   "-deprecation",
   "-encoding",
@@ -47,7 +53,6 @@ scalacOptions in ThisBuild ++= Seq(
   "-Xlint:inaccessible",
   "-Xlint:infer-any",
   "-Xlint:missing-interpolator",
-  "-Xlint:nullary-override",
   "-Xlint:nullary-unit",
   "-Xlint:option-implicit",
   "-Xlint:package-object-classes",

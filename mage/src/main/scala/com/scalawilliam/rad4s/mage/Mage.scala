@@ -1,6 +1,5 @@
-package com.scalawilliam.mage
+package com.scalawilliam.rad4s.mage
 
-import scala.language.experimental.macros
 import scala.reflect.macros.whitebox
 
 object Mage {
