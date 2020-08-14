@@ -7,6 +7,7 @@ before_install:
   - git fetch origin --tags
   - git tag
   - x=$(git tag --points-at HEAD); if [ "$x" ]; then export TRAVIS_TAG=$x; fi
+  - export CI_SONATYPE_RELEASE="; sonatypePrepare; sonatypeBundleUpload"
 stages:
   - name: test
   - name: release
