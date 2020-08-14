@@ -6,6 +6,7 @@ jdk:
 before_install:
   - git fetch origin --tags
   - git tag
+  - x=$(git tag --points-at HEAD); if [ "$x" ]; then export TRAVIS_TAG=$x; fi
 stages:
   - name: test
   - name: release
