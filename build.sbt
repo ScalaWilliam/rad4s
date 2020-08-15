@@ -71,6 +71,14 @@ lazy val `es1` = project
     circe
   )
 
+lazy val `chirps` = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect"     % "2.1.4"
+    ),
+    circe
+  )
+
 def circeVersion = "0.13.0"
 
 def circe =
