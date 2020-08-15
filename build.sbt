@@ -74,10 +74,27 @@ lazy val `es1` = project
 lazy val `chirps` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect"     % "2.1.4"
+      "org.typelevel" %% "cats-effect" % "2.1.4"
     ),
     circe
   )
+
+lazy val magtags = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.lihaoyi"    %% "scalatags" % "0.7.0",
+      "com.propensive" %% "magnolia"  % "0.16.0"
+    )
+  )
+
+lazy val chirps2 = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect" % "2.1.4"
+    ),
+    circe
+  )
+  .dependsOn(chirps)
 
 def circeVersion = "0.13.0"
 
