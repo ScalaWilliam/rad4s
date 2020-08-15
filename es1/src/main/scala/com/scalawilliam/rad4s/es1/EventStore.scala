@@ -3,7 +3,10 @@ package com.scalawilliam.rad4s.es1
 import java.nio.file.Path
 import java.time.Instant
 
+import cats._
+import cats.implicits._
 import cats.effect.Sync
+import cats.effect.concurrent.Ref
 import doobie.{ConnectionIO, Fragment, Transactor}
 
 trait EventStore[F[_]] {
@@ -32,5 +35,8 @@ object EventStore {
   def forDoobieTable[F[_]: Sync](
       name: String): ConnectionIO[Transactor[F] => DoobieEventStore[F]] =
     DoobieEventStore.forTable[F](name)
+
+  def inMemoryStore[F[_]: Sync](initial: List[Event]): F[EventStore[F]] =
+    Ref.of[F, List[EventStore.Event]](initial).map(RefMemoryStore[F](_))
 
 }
