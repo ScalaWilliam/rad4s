@@ -7,6 +7,7 @@ git.useGitDescribe in ThisBuild := true
 
 releaseVersionBump := sbtrelease.Version.Bump.Minor
 releaseProcess := Seq[ReleaseStep](
+  inquireVersions,
 //  runClean,
   runTest,
   ReleaseStep { st =>
