@@ -41,7 +41,12 @@ jobs:
 
       - save_cache:
           paths:
+            - ~/.sbt
+            - ~/.ivy2/cache
+            - ~/.coursier
             - ~/.m2
+            - ~/.cache
+  
           key: v1-dependencies--{{ checksum "build.sbt" }}
       - run: git config --global user.email "hello@scalawilliam.com"
       - run: git config --global user.name "ScalaWilliam"
