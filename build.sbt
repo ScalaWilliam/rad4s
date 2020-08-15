@@ -17,6 +17,8 @@ releaseProcess := Seq[ReleaseStep](
     st.log.info("Setting version to '%s'.".format(newVersion))
     reapply(Seq(version in ThisBuild := newVersion), st)
   },
+  setNextVersion,
+  tagRelease,
   publishArtifacts,
   pushChanges
 )
