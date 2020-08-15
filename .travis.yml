@@ -15,7 +15,7 @@ jobs:
     - name: test
       script: sbt test
     - stage: release
-      script: sbt 'release with-defaults'
+      script: git checkout master && sbt 'release with-defaults'
 cache:
   directories:
     - $HOME/.cache/coursier
