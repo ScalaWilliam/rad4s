@@ -1,5 +1,5 @@
-organization := "com.scalawilliam"
-name := "rad4s"
+organization := "com.scalawilliam.rad4s"
+name := "root"
 enablePlugins(GitVersioning)
 import sbtrelease.Version
 
@@ -27,7 +27,7 @@ libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.0" % "
 
 inThisBuild(
   List(
-    organization := "com.scalawilliam",
+    organization := "com.scalawilliam.rad4s",
     homepage := Some(url("https://github.com/ScalaWilliam/rad4s")),
     licenses := List(
       "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
@@ -44,17 +44,15 @@ skip in publish := true
 
 lazy val mage = project
   .settings(
-    name := "rad4s-mage",
     libraryDependencies += "org.scala-lang" % "scala-reflect"  % scalaVersion.value,
     libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
     libraryDependencies += "org.typelevel"  %% "cats-effect"   % "2.1.4" % Test,
     libraryDependencies += "org.typelevel"  %% "cats-core"     % "2.0.0" % Test,
-    initialCommands in console := """import com.scalawilliam.mage._"""
+    initialCommands in console := """import com.scalawilliam.rad4s.mage._"""
   )
 
 lazy val `field-names` = project
   .settings(
-    name := "rad4s-field-names",
     libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
   )
 
@@ -94,7 +92,6 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 lazy val `http4s-resource-servlet` = project
   .settings(
-    name := "rad4s-http4s-resource-servlet",
     libraryDependencies ++= Seq(
       "org.http4s"    %% "http4s-servlet"   % "0.21.4",
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
