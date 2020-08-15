@@ -1,6 +1,5 @@
 name := "rad4s"
 enablePlugins(GitVersioning)
-addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "1.0.0")
 import sbtrelease.Version
 
 import ReleaseTransformations._
@@ -8,8 +7,7 @@ git.useGitDescribe in ThisBuild := true
 
 releaseVersionBump := sbtrelease.Version.Bump.Minor
 releaseProcess := Seq[ReleaseStep](
-  inquireVersions,
-  runClean,
+//  runClean,
   runTest,
   ReleaseStep { st =>
     val currentVersion = Version(Project.extract(st).get(version)).getOrElse(sys.error(s"Cannot extract version from '${Project.extract(st).get(version)}'"))
