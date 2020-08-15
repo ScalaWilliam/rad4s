@@ -15,7 +15,8 @@ jobs:
     - name: test
       script: sbt test
     - stage: release
-      script: git checkout master && sbt bintrayWhoami bintrayEnsureCredentials 'release with-defaults'
+      script: git checkout master && sbt -Dbintray.user=$BINTRAY_USER -Dbintray.pass=$BINTRAY_PASS bintrayWhoami bintrayEnsureCredentials publish
+      #'release with-defaults'
 cache:
   directories:
     - $HOME/.cache/coursier
