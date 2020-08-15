@@ -28,7 +28,7 @@ releaseProcess := Seq[ReleaseStep](
 
 bintrayOrganization := Some("scalawilliam")
 scalaVersion in ThisBuild := "2.13.3"
-libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
+libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.1" % "test"
 
 inThisBuild(
   List(
@@ -52,7 +52,7 @@ lazy val mage = project
     libraryDependencies += "org.scala-lang" % "scala-reflect"  % scalaVersion.value,
     libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
     libraryDependencies += "org.typelevel"  %% "cats-effect"   % "2.1.4" % Test,
-    libraryDependencies += "org.typelevel"  %% "cats-core"     % "2.0.0" % Test,
+    libraryDependencies += "org.typelevel"  %% "cats-core"     % "2.1.1" % Test,
     initialCommands in console := """import com.scalawilliam.rad4s.mage._"""
   )
 
@@ -71,7 +71,7 @@ lazy val `es1` = project
     circe
   )
 
-def circeVersion = "0.12.3"
+def circeVersion = "0.13.0"
 
 def circe =
   libraryDependencies ++= Seq(
@@ -117,7 +117,7 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 lazy val `http4s-resource-servlet` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-servlet"   % "0.21.4",
+      "org.http4s"    %% "http4s-servlet"   % "0.21.7",
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
     )
   )
