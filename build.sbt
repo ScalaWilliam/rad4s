@@ -82,10 +82,12 @@ lazy val `chirps` = project
 lazy val magtags = project
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi"    %% "scalatags" % "0.7.0",
-      "com.propensive" %% "magnolia"  % "0.16.0"
+      "com.lihaoyi"    %% "scalatags"    % "0.7.0",
+      "com.propensive" %% "magnolia"     % "0.16.0",
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value
     )
   )
+  .dependsOn(`field-names`)
 
 lazy val chirps2 = project
   .settings(
