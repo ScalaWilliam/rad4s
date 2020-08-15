@@ -7,7 +7,7 @@ before_install:
   - git fetch origin --tags
 stages:
   - name: test
-    if: tag IS blank
+    if: tag IS blank and branch != master
   - name: release
     if: branch = master
 jobs:
