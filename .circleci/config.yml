@@ -29,6 +29,8 @@ jobs:
           fingerprints:
             - "25:c2:38:26:91:9f:34:76:db:ce:c6:d1:22:ca:b8:ce"
       - checkout
+      - run: git fetch --tags
+
 
       # Download and cache dependencies
       - restore_cache:
@@ -51,4 +53,5 @@ jobs:
       - run: git config --global user.email "hello@scalawilliam.com"
       - run: git config --global user.name "ScalaWilliam"
       # run tests!
+      - run: git status
       - run: cat /dev/null | sbt 'show version' 'release with-defaults'
