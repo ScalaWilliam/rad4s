@@ -1,3 +1,4 @@
+organization := "com.scalawilliam"
 name := "rad4s"
 enablePlugins(GitVersioning)
 import sbtrelease.Version
