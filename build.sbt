@@ -7,7 +7,7 @@ git.useGitDescribe in ThisBuild := true
 
 releaseVersionBump := sbtrelease.Version.Bump.Minor
 releaseProcess := Seq[ReleaseStep](
-//  runClean,
+ runClean,
   runTest,
   ReleaseStep { st =>
     val currentVersion = Version(Project.extract(st).get(version)).getOrElse(sys.error(s"Cannot extract version from '${Project.extract(st).get(version)}'"))
