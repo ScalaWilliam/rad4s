@@ -20,6 +20,8 @@ releaseProcess := Seq[ReleaseStep](
   pushChanges,
 )
 
+publishMavenStyle in ThisBuild := false
+
 scalaVersion in ThisBuild := "2.13.3"
 libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
 
