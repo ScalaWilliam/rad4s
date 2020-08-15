@@ -17,7 +17,7 @@ releaseProcess := Seq[ReleaseStep](
   },
   tagRelease,
   publishArtifacts,
-  pushChanges
+  pushChanges,
 )
 
 scalaVersion in ThisBuild := "2.13.3"
