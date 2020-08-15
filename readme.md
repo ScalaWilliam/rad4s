@@ -59,7 +59,7 @@ resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
 libraryDependencies += "com.scalawilliam.rad4s" %% "field-names" % "0.0.29"
 ```
 
-# http4s-servlet enhancement (`http4s-resource-servlet`)
+## `http4s-resource-servlet`
 
 Enabled you to start an HttpApp in http4s, parametrised by `ServletConfig`, to retrieve things like the context path (to create URLs).
 
