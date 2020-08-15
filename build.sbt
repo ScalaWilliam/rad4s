@@ -8,17 +8,22 @@ git.useGitDescribe in ThisBuild := true
 
 releaseVersionBump := sbtrelease.Version.Bump.Minor
 releaseProcess := Seq[ReleaseStep](
- runClean,
+  runClean,
   runTest,
   ReleaseStep { st =>
-    val currentVersion = Version(Project.extract(st).get(version)).getOrElse(sys.error(s"Cannot extract version from '${Project.extract(st).get(version)}'"))
-    val newVersion = currentVersion.withoutQualifier.bump(sbtrelease.Version.Bump.Next).withoutQualifier.string
+    val currentVersion =
+      Version(Project.extract(st).get(version)).getOrElse(sys.error(
+        s"Cannot extract version from '${Project.extract(st).get(version)}'"))
+    val newVersion = currentVersion.withoutQualifier
+      .bump(sbtrelease.Version.Bump.Next)
+      .withoutQualifier
+      .string
     st.log.info("Setting version to '%s'.".format(newVersion))
     reapply(Seq(version in ThisBuild := newVersion), st)
   },
   tagRelease,
   publishArtifacts,
-  pushChanges,
+  pushChanges
 )
 
 bintrayOrganization := Some("scalawilliam")
@@ -55,6 +60,25 @@ lazy val `field-names` = project
   .settings(
     libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
   )
+
+lazy val `es1` = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.tpolecat"  %% "doobie-core"     % "0.9.0",
+      "org.tpolecat"  %% "doobie-postgres" % "0.9.0",
+      "org.typelevel" %% "cats-effect"     % "2.1.4"
+    ),
+    circe
+  )
+
+def circeVersion = "0.12.3"
+
+def circe =
+  libraryDependencies ++= Seq(
+    "io.circe" %% "circe-core",
+    "io.circe" %% "circe-generic",
+    "io.circe" %% "circe-parser"
+  ).map(_ % circeVersion)
 
 scalacOptions in ThisBuild ++= Seq(
   "-deprecation",
