@@ -1,6 +1,29 @@
 name := "rad4s"
+enablePlugins(GitVersioning)
+addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "1.0.0")
+import sbtrelease.Version
+
+import ReleaseTransformations._
+git.useGitDescribe in ThisBuild := true
+
+releaseVersionBump := sbtrelease.Version.Bump.Minor
+releaseProcess := Seq[ReleaseStep](
+  inquireVersions,
+  runClean,
+  runTest,
+  ReleaseStep { st =>
+    val currentVersion = Version(Project.extract(st).get(version)).getOrElse(sys.error(s"Cannot extract version from '${Project.extract(st).get(version)}'"))
+    val newVersion = currentVersion.withoutQualifier.bump(sbtrelease.Version.Bump.Minor).withoutQualifier.string
+    st.log.info("Setting version to '%s'.".format(newVersion))
+    reapply(Seq(version in ThisBuild := newVersion), st)
+  },
+  publishArtifacts,
+  pushChanges
+)
+
 scalaVersion in ThisBuild := "2.13.3"
 libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
+
 inThisBuild(
   List(
     organization := "com.scalawilliam",

@@ -1,4 +1,7 @@
+*.swp
 .idea
 *.iml
 *~
 target/
+.metals
+metals.sbt
