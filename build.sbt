@@ -21,6 +21,7 @@ releaseProcess := Seq[ReleaseStep](
   pushChanges,
 )
 
+bintrayOrganization := Some("scalawilliam")
 scalaVersion in ThisBuild := "2.13.3"
 libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
 
