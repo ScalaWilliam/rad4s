@@ -5,9 +5,6 @@ jdk:
   - oraclejdk11
 before_install:
   - git fetch origin --tags
-  - git tag
-  - x=$(git tag --points-at HEAD); if [ "$x" ]; then export TRAVIS_TAG=$x; fi
-  - export CI_SONATYPE_RELEASE="; sonatypePrepare; sonatypeBundleUpload"
 stages:
   - name: test
     if: tag IS blank
@@ -18,7 +15,7 @@ jobs:
     - name: test
       script: sbt test
     - stage: release
-      script: sbt ci-release
+      script: sbt 'release with-defaults'
 cache:
   directories:
     - $HOME/.cache/coursier
