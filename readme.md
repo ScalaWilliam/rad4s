@@ -119,3 +119,21 @@ Extract form fields (not files) for easy processing.
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
 libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-multipart-simple-form" % "0.0.41"
 ```
+
+## `http4s-nested-routes`
+Allow to nest routes within routes. Perfect for conditional routes
+eg based on user level. This helps lift the security level higher
+instead at the definition of endpoints.
+                                 
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-nested-routes" % "0.0.41"
+```
+
+## `http4s-jsoup-encoder`
+Support JSoup `Document` as a response body in http4s.
+                                 
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-jsoup-encoder" % "0.0.41"
+```

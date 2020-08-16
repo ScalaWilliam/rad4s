@@ -163,6 +163,22 @@ lazy val `http4s-multipart-simple-form` = project
     )
   )
 
+lazy val `http4s-nested-routes` = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.http4s" %% "http4s-dsl"  % "0.21.7",
+      "org.http4s" %% "http4s-core" % "0.21.7"
+    )
+  )
+
+lazy val `http4s-jsoup-encoder` = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.http4s" %% "http4s-core" % "0.21.7",
+      "org.jsoup"  % "jsoup"        % "1.11.3"
+    )
+  )
+
 lazy val `doobie-postgres-json-circe-type` = project
   .settings(
     circe,
@@ -171,3 +187,5 @@ lazy val `doobie-postgres-json-circe-type` = project
       "org.tpolecat" %% "doobie-postgres" % "0.9.0"
     )
   )
+
+Global / onChangedBuildSource := IgnoreSourceChanges
