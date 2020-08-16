@@ -1,8 +1,10 @@
 # rad4s
 
 > High velocity Scala.
-> A set of utilities to speed up things like table rendering, prototyping storage,
-> generation of HTML tables and testing.
+> A set of utilities to speed up rendering, storage, testing, and prototyping.
+
+![image](https://user-images.githubusercontent.com/2464813/90326824-dd516e80-df84-11ea-9282-cdcd91b075b4.png)
+
 
 ## `chirps`
 Storage engine using JSON and plain files with a degree of concurrency support.
