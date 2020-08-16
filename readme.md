@@ -69,3 +69,13 @@ Install with:
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
 libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-resource-servlet" % "0.0.29"
 ```
+
+## `http4s-heroku-redirect`
+
+Redirect to SSL by default for Heroku apps
+
+## `chirps`
+Storage engine using JSON and plain files with a degree of concurrency support.
+
+## `chirps2`
+Similar to `chirps`, but uses a default value.

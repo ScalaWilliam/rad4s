@@ -148,3 +148,11 @@ lazy val `http4s-resource-servlet` = project
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
     )
   )
+
+lazy val `http4s-heroku-redirect` = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.http4s" %% "http4s-dsl"  % "0.21.7",
+      "org.http4s" %% "http4s-core" % "0.21.7"
+    )
+  )
