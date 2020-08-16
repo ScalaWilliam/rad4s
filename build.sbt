@@ -139,8 +139,6 @@ scalacOptions in ThisBuild ++= Seq(
   "-Ywarn-value-discard"
 )
 
-Global / onChangedBuildSource := ReloadOnSourceChanges
-
 lazy val `http4s-resource-servlet` = project
   .settings(
     libraryDependencies ++= Seq(
@@ -150,6 +148,14 @@ lazy val `http4s-resource-servlet` = project
   )
 
 lazy val `http4s-heroku-redirect` = project
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.http4s" %% "http4s-dsl"  % "0.21.7",
+      "org.http4s" %% "http4s-core" % "0.21.7"
+    )
+  )
+
+lazy val `http4s-multipart-simple-form` = project
   .settings(
     libraryDependencies ++= Seq(
       "org.http4s" %% "http4s-dsl"  % "0.21.7",

@@ -111,3 +111,11 @@ Directly embed a Circe-compatible type into Doobie queries for PostgreSQL.
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
 libraryDependencies += "com.scalawilliam.rad4s" %% "doobie-postgres-json-circe-type" % "0.0.41"
 ```
+
+## `http4s-multipart-simple-form`
+Extract form fields (not files) for easy processing.
+
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-multipart-simple-form" % "0.0.41"
+```
