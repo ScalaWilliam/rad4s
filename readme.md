@@ -3,8 +3,7 @@
 > High velocity Scala.
 > A set of utilities to speed up rendering, storage, testing, and prototyping.
 
-![image](https://user-images.githubusercontent.com/2464813/90326824-dd516e80-df84-11ea-9282-cdcd91b075b4.png)
-
+![image](https://user-images.githubusercontent.com/2464813/90326836-0540d200-df85-11ea-99d3-32e530116f59.png)
 
 ## `chirps`
 Storage engine using JSON and plain files with a degree of concurrency support.
