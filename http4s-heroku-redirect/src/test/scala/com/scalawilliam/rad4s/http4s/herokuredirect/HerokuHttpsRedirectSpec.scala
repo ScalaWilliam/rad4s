@@ -1,5 +1,6 @@
 package com.scalawilliam.rad4s.http4s.herokuredirect
 import HerokuHttpsRedirect._
+import org.http4s.headers.Host
 import org.scalatest.freespec.AnyFreeSpec
 
 final class HerokuHttpsRedirectSpec extends AnyFreeSpec {
@@ -13,5 +14,7 @@ final class HerokuHttpsRedirectSpec extends AnyFreeSpec {
       isSecure(
         Request(headers = Headers.empty.put(Header(HeaderName, WhenSsl)))))
   }
-
+  "Host header can be turned into a URI" in {
+    assert(hostToUri(Host("test.com")).renderString == "https://test.com")
+  }
 }
