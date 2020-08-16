@@ -37,7 +37,7 @@ val tCalls: scala.collection.immutable.Map[String,ExampleTrait => String] = Map(
 Install with:
 ```scala
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
-libraryDependencies += "com.scalawilliam.rad4s" %% "mage" % "0.0.29"
+libraryDependencies += "com.scalawilliam.rad4s" %% "mage" % "0.0.38"
 ```
 
 ## `field-names`
@@ -56,7 +56,7 @@ Install with:
 
 ```scala
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
-libraryDependencies += "com.scalawilliam.rad4s" %% "field-names" % "0.0.29"
+libraryDependencies += "com.scalawilliam.rad4s" %% "field-names" % "0.0.38"
 ```
 
 ## `http4s-resource-servlet`
@@ -67,15 +67,39 @@ Install with:
 
 ```scala
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
-libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-resource-servlet" % "0.0.29"
+libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-resource-servlet" % "0.0.38"
 ```
 
 ## `http4s-heroku-redirect`
 
 Redirect to SSL by default for Heroku apps
 
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-heroku-redirect" % "0.0.38"
+```
+
+## `es1`
+Event-streamed storage engine for NDJson and PsotgreSQL.
+
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "es1" % "0.0.38"
+```
+
 ## `chirps`
 Storage engine using JSON and plain files with a degree of concurrency support.
 
+
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "chirps" % "0.0.38"
+```
+
 ## `chirps2`
 Similar to `chirps`, but uses a default value.
+
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "chirps2" % "0.0.38"
+```
