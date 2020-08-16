@@ -156,3 +156,12 @@ lazy val `http4s-heroku-redirect` = project
       "org.http4s" %% "http4s-core" % "0.21.7"
     )
   )
+
+lazy val `doobie-postgres-json-circe-type` = project
+  .settings(
+    circe,
+    libraryDependencies ++= Seq(
+      "org.tpolecat" %% "doobie-core"     % "0.9.0",
+      "org.tpolecat" %% "doobie-postgres" % "0.9.0"
+    )
+  )

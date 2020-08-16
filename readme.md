@@ -103,3 +103,11 @@ Similar to `chirps`, but uses a default value.
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
 libraryDependencies += "com.scalawilliam.rad4s" %% "chirps2" % "0.0.38"
 ```
+
+## `doobie-postgres-json-circe-type`
+Directly embed a Circe-compatible type into Doobie queries for PostgreSQL.
+
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "doobie-postgres-json-circe-type" % "0.0.41"
+```
