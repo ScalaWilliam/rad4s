@@ -137,3 +137,11 @@ Support JSoup `Document` as a response body in http4s.
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
 libraryDependencies += "com.scalawilliam.rad4s" %% "http4s-jsoup-encoder" % "0.0.41"
 ```
+
+## `doobie-postgres-docker-testing`
+Enable reproducible testing with Doobie, PostgreSQL and Docker.
+                                 
+```scala
+resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
+libraryDependencies += "com.scalawilliam.rad4s" %% "doobie-postgres-docker-testing" % "0.0.42"
+```

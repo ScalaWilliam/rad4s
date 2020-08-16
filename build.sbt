@@ -188,4 +188,14 @@ lazy val `doobie-postgres-json-circe-type` = project
     )
   )
 
+lazy val `doobie-postgres-docker-testing` = project
+  .settings(
+    circe,
+    libraryDependencies ++= Seq(
+      "org.tpolecat"           %% "doobie-core"     % "0.9.0",
+      "org.tpolecat"           %% "doobie-postgres" % "0.9.0",
+      "com.github.docker-java" % "docker-java"      % "3.0.14"
+    )
+  )
+
 Global / onChangedBuildSource := IgnoreSourceChanges
