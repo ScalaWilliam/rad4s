@@ -8,22 +8,35 @@ trait FieldNames[T] {
 }
 object FieldNames {
 
-  def fromList[T](names: List[String]): FieldNames[T] = new FieldNames[T] {
-    override def fieldNames: List[String] = names
+  import shapeless._
+  import shapeless.ops.record._
+  import shapeless._
+  import shapeless.ops.hlist.{Mapper, ToTraversable}
+
+  import shapeless._
+  import shapeless.ops.record._
+
+  private object toName extends Poly1 {
+    implicit def keyToName[A] = at[Symbol with A](_.name)
   }
 
-  implicit def caseCaseClass[CaseClass, Representation <: HList](
-      implicit labelledGeneric: LabelledGeneric.Aux[CaseClass, Representation],
-      representationFieldNames: FieldNames[Representation])
-    : FieldNames[CaseClass] = fromList(representationFieldNames.fieldNames)
-
-  implicit def caseHNil: FieldNames[HNil] = fromList[HNil](Nil)
-
-  implicit def caseHCons[FieldKey <: Symbol, FieldValueType, Rest <: HList](
+  implicit def recordDecoder[A,
+                             R <: HList,
+                             LR <: HList,
+                             K <: HList,
+                             KL <: HList](
       implicit
-      keyWitness: Witness.Aux[FieldKey],
-      restOfFieldNames: FieldNames[Rest])
-    : FieldNames[FieldType[FieldKey, FieldValueType] :: Rest] =
-    fromList(keyWitness.value.name :: restOfFieldNames.fieldNames)
+      gen: Generic.Aux[A, R],
+      lgen: LabelledGeneric.Aux[A, LR],
+      kk: Keys.Aux[LR, K],
+      m: Mapper.Aux[toName.type, K, KL],
+      toSeq: ToTraversable.Aux[KL, List, String]): FieldNames[A] =
+    new FieldNames[A] {
+      def fieldNames: List[String] =
+        kk.apply.map(toName).to[List]
+    }
+
+  def apply[T](implicit hasKeys: FieldNames[T]): FieldNames[T] =
+    hasKeys
 
 }
