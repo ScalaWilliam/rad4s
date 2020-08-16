@@ -37,7 +37,7 @@ libraryDependencies += "com.scalawilliam.rad4s" %% "doobie-postgres-json-circe-t
 ```
 
 ## `es1`
-Event-streamed storage engine for NDJson and PsotgreSQL.
+Event-streamed storage engine for NDJson and PostgreSQL.
 
 ```scala
 resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
