@@ -13,7 +13,7 @@ import scala.concurrent.duration.Duration
 
 /** Servlet to allow for HttpApp to be opened as a resource, and depend on ServletConfig,
   * such as to pick up the context path for example. */
-class ResourceServlet(
+class InitialisingAsyncHttp4sServlet(
     appResource: ServletConfig => Resource[IO, HttpApp[IO]],
     serviceRef: Ref[IO, HttpApp[IO]] = Ref.unsafe(HttpApp.notFound),
     cleanUpRef: Ref[IO, IO[Unit]] = Ref.unsafe(IO.unit),
