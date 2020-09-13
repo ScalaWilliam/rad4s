@@ -1,5 +1,5 @@
 organization := "com.scalawilliam.rad4s"
-name := "root"
+name := "rad4s"
 enablePlugins(GitVersioning)
 import sbtrelease.Version
 
