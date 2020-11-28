@@ -21,14 +21,6 @@ resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
 libraryDependencies += "com.scalawilliam.rad4s" %% "chirps2" % "0.0.38"
 ```
 
-## `doobie-postgres-docker-testing`
-Enable reproducible testing with Doobie, PostgreSQL and Docker.
-                                 
-```scala
-resolvers in ThisBuild += Resolver.bintrayRepo("scalawilliam", "maven")
-libraryDependencies += "com.scalawilliam.rad4s" %% "doobie-postgres-docker-testing" % "0.0.42"
-```
-
 ## `doobie-postgres-json-circe-type`
 Directly embed a Circe-compatible type into Doobie queries for PostgreSQL.
 

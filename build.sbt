@@ -27,8 +27,8 @@ releaseProcess := Seq[ReleaseStep](
 )
 
 bintrayOrganization := Some("scalawilliam")
-scalaVersion in ThisBuild := "2.13.3"
-libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.1" % "test"
+scalaVersion in ThisBuild := "2.13.4"
+libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.3" % "test"
 
 inThisBuild(
   List(
@@ -51,8 +51,8 @@ lazy val mage = project
   .settings(
     libraryDependencies += "org.scala-lang" % "scala-reflect"  % scalaVersion.value,
     libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
-    libraryDependencies += "org.typelevel"  %% "cats-effect"   % "2.1.4" % Test,
-    libraryDependencies += "org.typelevel"  %% "cats-core"     % "2.1.1" % Test,
+    libraryDependencies += "org.typelevel"  %% "cats-effect"   % "2.3.0" % Test,
+    libraryDependencies += "org.typelevel"  %% "cats-core"     % "2.3.0" % Test,
     initialCommands in console := """import com.scalawilliam.rad4s.mage._"""
   )
 
@@ -64,9 +64,9 @@ lazy val `field-names` = project
 lazy val `es1` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.tpolecat"  %% "doobie-core"     % "0.9.0",
-      "org.tpolecat"  %% "doobie-postgres" % "0.9.0",
-      "org.typelevel" %% "cats-effect"     % "2.1.4"
+      "org.tpolecat"  %% "doobie-core"     % "0.9.4",
+      "org.tpolecat"  %% "doobie-postgres" % "0.9.4",
+      "org.typelevel" %% "cats-effect"     % "2.3.0"
     ),
     circe
   )
@@ -74,7 +74,7 @@ lazy val `es1` = project
 lazy val `chirps` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % "2.1.4"
+      "org.typelevel" %% "cats-effect" % "2.3.0"
     ),
     circe
   )
@@ -82,8 +82,8 @@ lazy val `chirps` = project
 lazy val magtags = project
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi"    %% "scalatags"    % "0.7.0",
-      "com.propensive" %% "magnolia"     % "0.16.0",
+      "com.lihaoyi"    %% "scalatags"    % "0.9.2",
+      "com.propensive" %% "magnolia"     % "0.17.0",
       "org.scala-lang" % "scala-reflect" % scalaVersion.value
     )
   )
@@ -92,7 +92,7 @@ lazy val magtags = project
 lazy val chirps2 = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % "2.1.4"
+      "org.typelevel" %% "cats-effect" % "2.3.0"
     ),
     circe
   )
@@ -142,7 +142,7 @@ scalacOptions in ThisBuild ++= Seq(
 lazy val `http4s-resource-servlet` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-servlet"   % "0.21.7",
+      "org.http4s"    %% "http4s-servlet"   % "0.21.13",
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
     )
   )
@@ -150,32 +150,32 @@ lazy val `http4s-resource-servlet` = project
 lazy val `http4s-heroku-redirect` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"  % "0.21.7",
-      "org.http4s" %% "http4s-core" % "0.21.7"
+      "org.http4s" %% "http4s-dsl"  % "0.21.13",
+      "org.http4s" %% "http4s-core" % "0.21.13"
     )
   )
 
 lazy val `http4s-multipart-simple-form` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"  % "0.21.7",
-      "org.http4s" %% "http4s-core" % "0.21.7"
+      "org.http4s" %% "http4s-dsl"  % "0.21.13",
+      "org.http4s" %% "http4s-core" % "0.21.13"
     )
   )
 
 lazy val `http4s-nested-routes` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"  % "0.21.7",
-      "org.http4s" %% "http4s-core" % "0.21.7"
+      "org.http4s" %% "http4s-dsl"  % "0.21.13",
+      "org.http4s" %% "http4s-core" % "0.21.13"
     )
   )
 
 lazy val `http4s-jsoup-encoder` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-core" % "0.21.7",
-      "org.jsoup"  % "jsoup"        % "1.11.3"
+      "org.http4s" %% "http4s-core" % "0.21.13",
+      "org.jsoup"  % "jsoup"        % "1.13.1"
     )
   )
 
@@ -183,18 +183,8 @@ lazy val `doobie-postgres-json-circe-type` = project
   .settings(
     circe,
     libraryDependencies ++= Seq(
-      "org.tpolecat" %% "doobie-core"     % "0.9.0",
-      "org.tpolecat" %% "doobie-postgres" % "0.9.0"
-    )
-  )
-
-lazy val `doobie-postgres-docker-testing` = project
-  .settings(
-    circe,
-    libraryDependencies ++= Seq(
-      "org.tpolecat"           %% "doobie-core"     % "0.9.0",
-      "org.tpolecat"           %% "doobie-postgres" % "0.9.0",
-      "com.github.docker-java" % "docker-java"      % "3.0.14"
+      "org.tpolecat" %% "doobie-core"     % "0.9.4",
+      "org.tpolecat" %% "doobie-postgres" % "0.9.4"
     )
   )
 
