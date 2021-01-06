@@ -47,7 +47,7 @@ inThisBuild(
   ))
 skip in publish := true
 
-val catsVersion = "2.3.0"
+val catsVersion = "2.3.1"
 lazy val mage = project
   .settings(
     libraryDependencies += "org.scala-lang" % "scala-reflect"  % scalaVersion.value,
@@ -62,7 +62,7 @@ lazy val `field-names` = project
     libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
   )
 
-val doobieVersion = "0.9.4"
+val doobieVersion = "0.10.0"
 lazy val `es1` = project
   .settings(
     libraryDependencies ++= Seq(
@@ -141,7 +141,7 @@ scalacOptions in ThisBuild ++= Seq(
   "-Ywarn-value-discard"
 )
 
-val http4sVersion = "0.21.13"
+val http4sVersion = "0.21.15"
 lazy val `http4s-resource-servlet` = project
   .settings(
     libraryDependencies ++= Seq(
