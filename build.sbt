@@ -47,12 +47,13 @@ inThisBuild(
   ))
 skip in publish := true
 
+val catsVersion = "2.3.0"
 lazy val mage = project
   .settings(
     libraryDependencies += "org.scala-lang" % "scala-reflect"  % scalaVersion.value,
     libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
-    libraryDependencies += "org.typelevel"  %% "cats-effect"   % "2.3.0" % Test,
-    libraryDependencies += "org.typelevel"  %% "cats-core"     % "2.3.0" % Test,
+    libraryDependencies += "org.typelevel"  %% "cats-effect"   % catsVersion % Test,
+    libraryDependencies += "org.typelevel"  %% "cats-core"     % catsVersion % Test,
     initialCommands in console := """import com.scalawilliam.rad4s.mage._"""
   )
 
@@ -61,12 +62,13 @@ lazy val `field-names` = project
     libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
   )
 
+val doobieVersion = "0.9.4"
 lazy val `es1` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.tpolecat"  %% "doobie-core"     % "0.9.4",
-      "org.tpolecat"  %% "doobie-postgres" % "0.9.4",
-      "org.typelevel" %% "cats-effect"     % "2.3.0"
+      "org.tpolecat"  %% "doobie-core"     % doobieVersion,
+      "org.tpolecat"  %% "doobie-postgres" % doobieVersion,
+      "org.typelevel" %% "cats-effect"     % catsVersion
     ),
     circe
   )
@@ -74,7 +76,7 @@ lazy val `es1` = project
 lazy val `chirps` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % "2.3.0"
+      "org.typelevel" %% "cats-effect" % catsVersion
     ),
     circe
   )
@@ -92,7 +94,7 @@ lazy val magtags = project
 lazy val chirps2 = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % "2.3.0"
+      "org.typelevel" %% "cats-effect" % catsVersion
     ),
     circe
   )
@@ -139,10 +141,11 @@ scalacOptions in ThisBuild ++= Seq(
   "-Ywarn-value-discard"
 )
 
+val http4sVersion = "0.21.13"
 lazy val `http4s-resource-servlet` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-servlet"   % "0.21.13",
+      "org.http4s"    %% "http4s-servlet"   % http4sVersion,
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
     )
   )
@@ -150,31 +153,31 @@ lazy val `http4s-resource-servlet` = project
 lazy val `http4s-heroku-redirect` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"  % "0.21.13",
-      "org.http4s" %% "http4s-core" % "0.21.13"
+      "org.http4s" %% "http4s-dsl"  % http4sVersion,
+      "org.http4s" %% "http4s-core" % http4sVersion
     )
   )
 
 lazy val `http4s-multipart-simple-form` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"  % "0.21.13",
-      "org.http4s" %% "http4s-core" % "0.21.13"
+      "org.http4s" %% "http4s-dsl"  % http4sVersion,
+      "org.http4s" %% "http4s-core" % http4sVersion
     )
   )
 
 lazy val `http4s-nested-routes` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"  % "0.21.13",
-      "org.http4s" %% "http4s-core" % "0.21.13"
+      "org.http4s" %% "http4s-dsl"  % http4sVersion,
+      "org.http4s" %% "http4s-core" % http4sVersion
     )
   )
 
 lazy val `http4s-jsoup-encoder` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-core" % "0.21.13",
+      "org.http4s" %% "http4s-core" % http4sVersion,
       "org.jsoup"  % "jsoup"        % "1.13.1"
     )
   )
@@ -183,8 +186,8 @@ lazy val `doobie-postgres-json-circe-type` = project
   .settings(
     circe,
     libraryDependencies ++= Seq(
-      "org.tpolecat" %% "doobie-core"     % "0.9.4",
-      "org.tpolecat" %% "doobie-postgres" % "0.9.4"
+      "org.tpolecat" %% "doobie-core"     % doobieVersion,
+      "org.tpolecat" %% "doobie-postgres" % doobieVersion
     )
   )
 
