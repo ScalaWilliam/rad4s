@@ -6,8 +6,8 @@ ThisBuild / baseVersion := "0.60.0"
 ThisBuild / publishGithubUser := "ScalaWilliam"
 ThisBuild / publishFullName := "ScalaWilliam"
 
-scalaVersion in ThisBuild := "2.13.5"
-libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.3" % "test"
+ThisBuild / scalaVersion := "2.13.5"
+ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.3" % "test"
 
 inThisBuild(
   List(
@@ -24,7 +24,7 @@ inThisBuild(
       )
     )
   ))
-skip in publish := true
+publish / skip := true
 
 val catsVersion = "2.3.1"
 lazy val mage = project
@@ -33,7 +33,7 @@ lazy val mage = project
     libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
     libraryDependencies += "org.typelevel"  %% "cats-effect"   % catsVersion % Test,
     libraryDependencies += "org.typelevel"  %% "cats-core"     % catsVersion % Test,
-    initialCommands in console := """import com.scalawilliam.rad4s.mage._"""
+    console / initialCommands := """import com.scalawilliam.rad4s.mage._"""
   )
 
 lazy val `field-names` = project
