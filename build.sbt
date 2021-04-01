@@ -1,10 +1,19 @@
 ThisBuild / organization := "com.scalawilliam.rad4s"
 name := "rad4s"
 
-ThisBuild / baseVersion := "0.60.0"
+//ThisBuild / baseVersion := "0.60.0"
 
-ThisBuild / publishGithubUser := "ScalaWilliam"
-ThisBuild / publishFullName := "ScalaWilliam"
+ThisBuild / version := "0.60.0"
+//ThisBuild / publishGithubUser := "ScalaWilliam"
+//ThisBuild / publishFullName := "ScalaWilliam"
+
+ThisBuild / publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
 
 ThisBuild / scalaVersion := "2.13.5"
 ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.3" % "test"
@@ -39,8 +48,8 @@ lazy val mage = project
 lazy val `field-names` = project
   .settings(
     libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3",
-    scalacOptions -= "-Xfatal-warnings",
-    fatalWarningsInCI := false
+    scalacOptions -= "-Xfatal-warnings"
+//    fatalWarningsInCI := false
   )
 
 val doobieVersion = "0.10.0"
@@ -181,6 +190,6 @@ lazy val `fs2-letsencrypt` = project
 
 Global / onChangedBuildSource := IgnoreSourceChanges
 
-enablePlugins(SonatypeCiReleasePlugin)
-ThisBuild / spiewakCiReleaseSnapshots := true
-ThisBuild / spiewakMainBranches := Seq("master")
+//enablePlugins(SonatypeCiReleasePlugin)
+//ThisBuild / spiewakCiReleaseSnapshots := true
+//ThisBuild / spiewakMainBranches := Seq("master")
