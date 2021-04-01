@@ -9,10 +9,10 @@ ThisBuild / version := "0.60.0"
 
 ThisBuild / publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+//  if (isSnapshot.value)
+  Some("snapshots" at nexus + "content/repositories/snapshots")
+//  else
+//    Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
 ThisBuild / scalaVersion := "2.13.5"
