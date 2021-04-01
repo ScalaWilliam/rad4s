@@ -58,7 +58,7 @@ jobs:
       - run: sbt ++${{ matrix.scala }} ci
 
       - name: Compress target directories
-        run: tar cf targets.tar http4s-multipart-simple-form/target http4s-heroku-redirect/target target http4s-nested-routes/target chirps2/target http4s-jsoup-encoder/target mage/target doobie-postgres-json-circe-type/target field-names/target magtags/target chirps/target http4s-resource-servlet/target es1/target project/target
+        run: tar cf targets.tar http4s-multipart-simple-form/target http4s-heroku-redirect/target target http4s-nested-routes/target chirps2/target http4s-jsoup-encoder/target fs2-letsencrypt/target mage/target doobie-postgres-json-circe-type/target field-names/target magtags/target chirps/target http4s-resource-servlet/target es1/target project/target
 
       - name: Upload target directories
         uses: actions/upload-artifact@v2
