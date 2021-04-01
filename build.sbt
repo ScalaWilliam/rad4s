@@ -1,33 +1,12 @@
-organization := "com.scalawilliam.rad4s"
+ThisBuild / organization := "com.scalawilliam.rad4s"
 name := "rad4s"
-enablePlugins(GitVersioning)
-import sbtrelease.Version
 
-import ReleaseTransformations._
-git.useGitDescribe in ThisBuild := true
+ThisBuild / baseVersion := "1.0"
 
-releaseVersionBump := sbtrelease.Version.Bump.Minor
-releaseProcess := Seq[ReleaseStep](
-  runClean,
-  runTest,
-  ReleaseStep { st =>
-    val currentVersion =
-      Version(Project.extract(st).get(version)).getOrElse(sys.error(
-        s"Cannot extract version from '${Project.extract(st).get(version)}'"))
-    val newVersion = currentVersion.withoutQualifier
-      .bump(sbtrelease.Version.Bump.Next)
-      .withoutQualifier
-      .string
-    st.log.info("Setting version to '%s'.".format(newVersion))
-    reapply(Seq(version in ThisBuild := newVersion), st)
-  },
-  tagRelease,
-  publishArtifacts,
-  pushChanges
-)
+ThisBuild / publishGithubUser := "ScalaWilliam"
+ThisBuild / publishFullName := "ScalaWilliam"
 
-bintrayOrganization := Some("scalawilliam")
-scalaVersion in ThisBuild := "2.13.4"
+scalaVersion in ThisBuild := "2.13.5"
 libraryDependencies in ThisBuild += "org.scalatest" %% "scalatest" % "3.2.3" % "test"
 
 inThisBuild(
@@ -192,3 +171,7 @@ lazy val `doobie-postgres-json-circe-type` = project
   )
 
 Global / onChangedBuildSource := IgnoreSourceChanges
+
+enablePlugins(SonatypeCiReleasePlugin)
+ThisBuild / spiewakCiReleaseSnapshots := true
+ThisBuild / spiewakMainBranches := Seq("master")
