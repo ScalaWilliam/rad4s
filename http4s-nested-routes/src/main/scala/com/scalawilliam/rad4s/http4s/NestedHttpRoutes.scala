@@ -16,13 +16,13 @@
 
 package com.scalawilliam.rad4s.http4s
 
-import org.http4s._
-import cats.{Functor, Monad}
 import cats.data.{Kleisli, OptionT}
+import cats.{Functor, Monad}
+import org.http4s._
 
 object NestedHttpRoutes {
 
-  def lift[F[_]: Monad](
+  def lift[F[_]](
       nestedRoutes: Request[F] => HttpRoutes[F]
   ): HttpRoutes[F] =
     Kleisli { request =>

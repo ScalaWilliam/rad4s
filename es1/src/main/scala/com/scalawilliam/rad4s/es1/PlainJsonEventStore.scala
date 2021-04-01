@@ -16,16 +16,14 @@
 
 package com.scalawilliam.rad4s.es1
 
-import io.circe._
-import io.circe.syntax._
-import io.circe.parser._
-import io.circe.generic.auto._
-import java.nio.file.{Files, Path}
-import cats._
-import cats.implicits._
-import cats.FlatMap
 import cats.effect.Sync
+import cats.implicits._
 import com.scalawilliam.rad4s.es1.EventStore.Event
+import io.circe.generic.auto._
+import io.circe.parser._
+import io.circe.syntax._
+
+import java.nio.file.{Files, Path}
 
 final case class PlainJsonEventStore[F[_]](path: Path)(implicit F: Sync[F])
     extends EventStore[F] {

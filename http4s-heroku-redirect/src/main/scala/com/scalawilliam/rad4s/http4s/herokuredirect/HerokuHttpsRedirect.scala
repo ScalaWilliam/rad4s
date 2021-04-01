@@ -41,7 +41,7 @@ object HerokuHttpsRedirect {
                       host = RegName(hostHeader.host)))
     )
 
-  def apply(targetUri: Uri)(route: HttpRoutes[IO]): HttpRoutes[IO] =
+  def apply(route: HttpRoutes[IO]): HttpRoutes[IO] =
     Kleisli { req: Request[IO] =>
       if (isSecure(req))
         route(req)

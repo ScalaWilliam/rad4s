@@ -16,13 +16,13 @@
 
 package com.scalawilliam.rad4s.es1
 
-import java.nio.file.{Files, Path, Paths}
-import java.time.Instant
-
 import cats.effect.{IO, Resource}
 import com.scalawilliam.rad4s.es1.EventStore.Event
 import org.scalatest.Assertion
 import org.scalatest.funsuite.AnyFunSuite
+
+import java.nio.file.{Files, Path}
+import java.time.Instant
 
 final class EventStoreSpec extends AnyFunSuite {
 
@@ -45,9 +45,6 @@ final class EventStoreSpec extends AnyFunSuite {
 
   def testIO[T](name: String)(ctor: IO[Assertion]): Unit =
     test(name)(ctor.unsafeRunSync())
-
-  import cats._
-  import cats.implicits._
   def testOn(name: String)(ctor: Resource[IO, EventStore[IO]]): Unit = {
 
     testIO(s"$name: file store works for a temp file and shows no data") {

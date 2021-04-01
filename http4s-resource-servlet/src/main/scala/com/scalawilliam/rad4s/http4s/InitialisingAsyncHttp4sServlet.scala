@@ -20,11 +20,11 @@ import cats.data.Kleisli
 import cats.effect.concurrent.Ref
 import cats.effect.{ConcurrentEffect, IO, Resource}
 import cats.implicits._
-import javax.servlet.ServletConfig
 import org.http4s.server.ServiceErrorHandler
 import org.http4s.servlet.{AsyncHttp4sServlet, ServletIo}
 import org.http4s.{HttpApp, Request}
 
+import javax.servlet.ServletConfig
 import scala.concurrent.duration.Duration
 
 /** Servlet to allow for HttpApp to be opened as a resource, and depend on ServletConfig,

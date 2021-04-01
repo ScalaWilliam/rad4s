@@ -16,22 +16,19 @@
 
 package com.scalawilliam.rad4s.chirps
 
-import io.circe.syntax._
-import io.circe.parser._
-import java.nio.file.{Files, Path}
-
-import cats._
-import cats.implicits._
-import cats.effect.concurrent.{Ref, MVar}
-import cats.effect.{ContextShift, IO, Sync, Concurrent}
-import io.circe.{Json, Encoder, Decoder}
-import io.circe.jawn.JawnParser
-import CircePureStorage._
+import cats.effect.concurrent.{MVar, MVar2, Ref}
 import cats.effect.implicits._
+import cats.effect.{Concurrent, Sync}
+import cats.implicits._
+import io.circe.jawn.JawnParser
+import io.circe.syntax._
+import io.circe.{Decoder, Encoder, Json}
+
+import java.nio.file.{Files, Path}
 
 object CircePureStorage {
 
-  final class MLock[F[_]: Sync: Concurrent](mvar: MVar[F, Unit]) {
+  final class MLock[F[_]: Concurrent](mvar: MVar2[F, Unit]) {
     def acquire: F[Unit] =
       mvar.take
 
@@ -44,15 +41,14 @@ object CircePureStorage {
 
   object MLock {
     // todo PR to cats docs
-    def apply[F[_]: Concurrent: Sync](
-        implicit contextShift: ContextShift[F]): F[MLock[F]] =
+    def apply[F[_]: Concurrent]: F[MLock[F]] =
       MVar[F].of(()).map(ref => new MLock(ref))
   }
 
   def make[F[_]: Sync, T: Encoder: Decoder](path: Path): PureStorage[F, T] =
     CircePureStorage(path)
 
-  def ensureSafe[F[_]: Sync, T](locker: MLock[F])(
+  def ensureSafe[F[_], T](locker: MLock[F])(
       pureStorage: PureStorage[F, T]): PureStorage[F, T] =
     new PureStorage[F, T] {
       override def modify(f: Option[T] => F[T]): F[T] =

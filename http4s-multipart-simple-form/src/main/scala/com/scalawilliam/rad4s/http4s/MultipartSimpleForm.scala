@@ -16,7 +16,6 @@
 
 package com.scalawilliam.rad4s.http4s
 
-import cats.Monad
 import cats.data.EitherT
 import cats.effect.Sync
 import cats.implicits._
@@ -28,8 +27,8 @@ final case class MultipartSimpleForm(items: Map[String, Vector[String]])
 object MultipartSimpleForm {
 
   implicit def multipart[F[_]: Sync](
-      implicit ed: EntityDecoder[F, Multipart[F]],
-      F: Monad[F]): EntityDecoder[F, MultipartSimpleForm] = {
+      implicit ed: EntityDecoder[F, Multipart[F]])
+    : EntityDecoder[F, MultipartSimpleForm] = {
     ed.map { multipartData =>
       import fs2._
       import fs2.text._

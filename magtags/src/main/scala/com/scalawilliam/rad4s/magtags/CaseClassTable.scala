@@ -16,14 +16,10 @@
 
 package com.scalawilliam.rad4s.magtags
 
-import java.time.{YearMonth, LocalDate}
-
 import com.scalawilliam.rad4s.fieldnames.FieldNames
 import magnolia._
-import scalatags.Text
-import shapeless._
 
-import scala.language.experimental.macros
+import java.time.{LocalDate, YearMonth}
 import scala.reflect.ClassTag
 
 object CaseClassTable {

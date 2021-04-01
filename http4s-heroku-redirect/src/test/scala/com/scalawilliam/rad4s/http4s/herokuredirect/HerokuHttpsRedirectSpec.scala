@@ -15,7 +15,7 @@
  */
 
 package com.scalawilliam.rad4s.http4s.herokuredirect
-import HerokuHttpsRedirect._
+import com.scalawilliam.rad4s.http4s.herokuredirect.HerokuHttpsRedirect._
 import org.http4s.headers.Host
 import org.scalatest.freespec.AnyFreeSpec
 

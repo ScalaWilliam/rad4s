@@ -16,14 +16,13 @@
 
 package com.scalawilliam.rad4s.chirps
 
-import java.nio.file.{Files, Path, Paths}
-
 import cats.effect.{ContextShift, IO, Resource}
+import com.scalawilliam.rad4s.chirps.CirceFileStorageSpec._
+import com.scalawilliam.rad4s.chirps.CircePureStorage.MLock
 import org.scalatest.Assertion
 import org.scalatest.funsuite.AnyFunSuite
-import CirceFileStorageSpec._
-import com.scalawilliam.rad4s.chirps.CircePureStorage.MLock
 
+import java.nio.file.{Files, Path, Paths}
 import scala.concurrent.ExecutionContext
 
 object CirceFileStorageSpec {

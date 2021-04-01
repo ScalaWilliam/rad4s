@@ -16,15 +16,14 @@
 
 package com.scalawilliam.rad4s.http4s
 
-import cats.Applicative
-import org.http4s.{MediaType, EntityEncoder, Charset, DefaultCharset}
 import org.http4s.headers.`Content-Type`
+import org.http4s.{Charset, DefaultCharset, EntityEncoder, MediaType}
 import org.jsoup.nodes.Document
 
 object JSoupDocumentEncoder extends JSoupDocumentEncoder
 
 trait JSoupDocumentEncoder {
-  implicit def jsoupDocumentEncoder[F[_]: Applicative](
+  implicit def jsoupDocumentEncoder[F[_]](
       implicit charset: Charset = DefaultCharset): EntityEncoder[F, Document] =
     contentEncoder(MediaType.text.html)
 

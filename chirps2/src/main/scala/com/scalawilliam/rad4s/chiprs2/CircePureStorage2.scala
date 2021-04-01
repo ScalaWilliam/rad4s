@@ -16,16 +16,15 @@
 
 package com.scalawilliam.rad4s.chiprs2
 
-import io.circe.syntax._
-import io.circe.parser._
-import java.nio.file.{Files, Path}
-
-import cats.effect.concurrent.{Ref, MVar}
 import cats.effect.Sync
+import cats.effect.concurrent.Ref
 import com.scalawilliam.rad4s.chiprs2.CircePureStorage2.PureStorage
 import com.scalawilliam.rad4s.chirps.CircePureStorage.MLock
-import io.circe.{Json, Encoder, Decoder}
 import io.circe.jawn.JawnParser
+import io.circe.syntax._
+import io.circe.{Decoder, Encoder, Json}
+
+import java.nio.file.{Files, Path}
 
 object CircePureStorage2 {
 

@@ -16,9 +16,8 @@
 
 package com.scalawilliam.rad4s.es1
 
-import cats._
-import cats.implicits._
 import cats.effect.Sync
+import cats.implicits._
 import doobie._
 import doobie.implicits._
 import doobie.implicits.legacy.instant._

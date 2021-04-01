@@ -16,10 +16,9 @@
 
 package com.scalawilliam.rad4s.es1
 
-import cats._
-import cats.implicits._
 import cats.effect._
 import cats.effect.concurrent.Ref
+import cats.implicits._
 import com.scalawilliam.rad4s.es1.EventStore.Event
 
 final case class RefMemoryStore[F[_]: Sync](ref: Ref[F, List[EventStore.Event]])

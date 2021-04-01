@@ -16,14 +16,13 @@
 
 package com.scalawilliam.rad4s.es1
 
-import java.nio.file.Path
-import java.time.Instant
-
-import cats._
-import cats.implicits._
 import cats.effect.Sync
 import cats.effect.concurrent.Ref
-import doobie.{ConnectionIO, Fragment, Transactor}
+import cats.implicits._
+import doobie.{ConnectionIO, Transactor}
+
+import java.nio.file.Path
+import java.time.Instant
 
 trait EventStore[F[_]] {
   def putEvent(event: EventStore.Event): F[Unit]

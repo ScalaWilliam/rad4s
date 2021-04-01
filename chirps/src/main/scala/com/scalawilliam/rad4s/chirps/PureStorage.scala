@@ -16,7 +16,7 @@
 
 package com.scalawilliam.rad4s.chirps
 
-import cats.effect.{IO, Sync}
+import cats.effect.Sync
 
 trait PureStorage[F[_], T] {
   def modify(f: Option[T] => F[T]): F[T]
