@@ -29,9 +29,9 @@ final case class NDJsonEventStore[F[_]](path: Path)(implicit F: Sync[F])
   import io.circe.syntax._
   override def putEvent(event: Event): F[Unit] =
     F.delay {
-      Files.writeString(path,
-                        event.asJson.noSpaces + "\n",
-                        StandardOpenOption.APPEND)
+      Files.write(path,
+                  (event.asJson.noSpaces + "\n").getBytes("UTF-8"),
+                  StandardOpenOption.APPEND)
     }.void
 
   override def listEvents: F[List[Event]] =

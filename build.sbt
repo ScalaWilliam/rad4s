@@ -38,7 +38,9 @@ lazy val mage = project
 
 lazy val `field-names` = project
   .settings(
-    libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3"
+    libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3",
+    scalacOptions -= "-Xfatal-warnings",
+    fatalWarningsInCI := false
   )
 
 val doobieVersion = "0.10.0"
@@ -88,11 +90,12 @@ def circe =
     "io.circe" %% "circe-parser"
   ).map(_ % circeVersion)
 
-scalacOptions in ThisBuild ++= Seq(
+ThisBuild / scalacOptions ++= Seq(
   "-deprecation",
   "-encoding",
   "utf-8",
   "-explaintypes",
+  "-Xfatal-warnings",
   "-feature",
   "-language:existentials",
   "-language:experimental.macros",
@@ -168,6 +171,12 @@ lazy val `doobie-postgres-json-circe-type` = project
       "org.tpolecat" %% "doobie-core"     % doobieVersion,
       "org.tpolecat" %% "doobie-postgres" % doobieVersion
     )
+  )
+
+lazy val `fs2-letsencrypt` = project
+  .settings(
+    libraryDependencies += "co.fs2"           %% "fs2-io"      % "3.0.1",
+    libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"
   )
 
 Global / onChangedBuildSource := IgnoreSourceChanges

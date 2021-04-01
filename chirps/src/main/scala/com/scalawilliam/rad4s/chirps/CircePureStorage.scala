@@ -87,7 +87,7 @@ final case class CircePureStorage[F[_], T: Encoder: Decoder](path: Path)(
     read.flatMap(f).flatTap(put)
 
   private def put(v: T): F[Unit] =
-    F.delay(Files.writeString(path, v.asJson.spaces2)).void
+    F.delay(Files.write(path, v.asJson.spaces2.getBytes("UTF-8"))).void
 
   def read: F[Option[T]] =
     fetchFile.map(_.map(_.as[T].fold(throw _, identity)))

@@ -30,7 +30,9 @@ final case class PlainJsonEventStore[F[_]](path: Path)(implicit F: Sync[F])
   override def putEvent(event: Event): F[Unit] =
     listEvents
       .flatMap(es =>
-        F.delay { Files.writeString(path, (es :+ event).asJson.noSpaces) })
+        F.delay {
+          Files.write(path, (es :+ event).asJson.noSpaces.getBytes("UTF-8"))
+      })
       .void
 
   override def listEvents: F[List[Event]] =
@@ -38,7 +40,7 @@ final case class PlainJsonEventStore[F[_]](path: Path)(implicit F: Sync[F])
       if (!Files.exists(path)) List.empty
       else if (Files.size(path) == 0) List.empty
       else
-        decode[List[Event]](Files.readString(path))
+        decode[List[Event]](new String(Files.readAllBytes(path), "UTF-8"))
           .getOrElse(sys.error(s"Cannot parse"))
     }
 }
