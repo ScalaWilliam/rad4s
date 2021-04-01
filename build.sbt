@@ -1,7 +1,7 @@
 ThisBuild / organization := "com.scalawilliam.rad4s"
 name := "rad4s"
 
-ThisBuild / baseVersion := "1.0"
+ThisBuild / baseVersion := "0.60.0"
 
 ThisBuild / publishGithubUser := "ScalaWilliam"
 ThisBuild / publishFullName := "ScalaWilliam"
