@@ -9,3 +9,4 @@ metals.sbt
 null/
 .bloop
 .vscode
+.binheroku-syslog

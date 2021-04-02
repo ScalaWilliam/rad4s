@@ -195,12 +195,11 @@ lazy val `fs2-letsencrypt` = project
 
 lazy val `http4s-browsersync` = project
   .settings(
-    libraryDependencies ++= Seq("org.http4s" %% "http4s-dsl"  % http4sVersion,
-                                "org.http4s" %% "http4s-core" % http4sVersion)
+    libraryDependencies ++= Seq(
+      "org.http4s"    %% "http4s-core"    % http4sVersion,
+      "org.typelevel" %% "log4cats-core"  % "1.2.2",
+      "org.typelevel" %% "log4cats-slf4j" % "1.2.2"
+    )
   )
 
 Global / onChangedBuildSource := IgnoreSourceChanges
-
-//enablePlugins(SonatypeCiReleasePlugin)
-//ThisBuild / spiewakCiReleaseSnapshots := true
-//ThisBuild / spiewakMainBranches := Seq("master")
