@@ -10,9 +10,9 @@ ThisBuild / version := "0.60.1-SNAPSHOT"
 ThisBuild / publishTo := {
   val nexus = "https://oss.sonatype.org/"
 //  if (isSnapshot.value)
-  Some("snapshots" at nexus + "content/repositories/snapshots")
+//  Some("snapshots" at nexus + "content/repositories/snapshots")
 //  else
-//    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
 ThisBuild / scalaVersion := "2.13.5"
@@ -185,7 +185,8 @@ lazy val `doobie-postgres-json-circe-type` = project
 lazy val `fs2-letsencrypt` = project
   .enablePlugins(SiteScaladocPlugin)
   .settings(
-    version := "0.60.2-SNAPSHOT",
+    version := "0.60.2",
+    versionScheme := Some("semver-spec"),
     libraryDependencies += "co.fs2"           %% "fs2-io"      % "3.0.1",
     libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"
   )
