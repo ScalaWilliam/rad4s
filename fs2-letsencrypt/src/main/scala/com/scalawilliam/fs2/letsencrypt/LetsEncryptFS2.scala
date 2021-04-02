@@ -61,9 +61,9 @@ import javax.net.ssl.{KeyManagerFactory, SSLContext}
   * Once the certificates are successfully fetched, you can:
   * - Get a standard [[javax.net.ssl.SSLContext]], so that you can use it in combination with libraries that are not FS2-TLS based.
   *   For example, http4s-blaze will use SSLContext, but http4s-ember will use TLSContext.
-  * - Get an FS2's [[fs2.io.net.tls.TLSContext]], so that you can use it in http4s-ember.
+  * - Get an FS2's fs2.io.net.tls.TLSContext, so that you can use it in http4s-ember.
   *
-  * All the certificates are supplied as [[cats.effect.Resource]] types, so that all the clean-ups are taken care of for you.
+  * All the certificates are supplied as cats.effect.Resource types, so that all the clean-ups are taken care of for you.
   * This also includes clearing out Arrays that should not retain passwords, private keys, and so forth, once they are no longer needed.
   *
   * This being a convenience library, these will be 2 most common use cases:
@@ -75,7 +75,7 @@ import javax.net.ssl.{KeyManagerFactory, SSLContext}
   *   .flatMap(tlsContext => /* Combine with Network[IO], or integrate into Ember */ )
   * }}}
   *
-  * @example {{{
+  *  @example {{{
   * LetsEncryptFS2
   *   .fromEnvironment[IO]
   *   .flatMap(_.sslContextResource)
@@ -95,6 +95,9 @@ object LetsEncryptFS2 {
 
   /** Load the certificate configuration from a directory specified as
     * an environment variable or as a system property.
+    *
+    * The system property is prioritised over the environment variable
+    * because it is more specific.
     */
   def fromEnvironment[F[_]: Sync]: Resource[F, LetsEncryptFS2] =
     Resource
@@ -103,12 +106,13 @@ object LetsEncryptFS2 {
           .delay {
             Paths
               .get(
-                sys.env
-                  .get(EnvVarName)
-                  .orElse(sys.props.get(SysPropertyName))
+                sys.props
+                  .get(DefaultSysPropertyName)
+                  .orElse(sys.env
+                    .get(DefaultEnvVarName))
                   .getOrElse(
                     sys.error(
-                      s"Expected environment variable '$EnvVarName' or system property '$SysPropertyName'"
+                      s"Expected environment variable '$DefaultEnvVarName' or system property '$DefaultSysPropertyName'"
                     )
                   )
               )
@@ -117,19 +121,46 @@ object LetsEncryptFS2 {
       }
       .flatMap(path => fromLetsEncryptDirectory(path))
 
-  val EnvVarName      = "LETSENCRYPT_CERT_DIR"
-  val SysPropertyName = "letsencrypt.cert.dir"
+  /**
+    * Default environment variable name to use by [[fromEnvironment]].
+    */
+  val DefaultEnvVarName = "LETSENCRYPT_CERT_DIR"
+
+  /**
+    * Default Java system property name to use by [[fromEnvironment]].
+    */
+  val DefaultSysPropertyName = "letsencrypt.cert.dir"
 
   private[letsencrypt] val PrivateKeyAlias        = "PrivateKeyAlias"
   private[letsencrypt] val CertificateAliasPrefix = "CertificateAlias"
 
-  val FullChainPemFile      = "fullchain.pem"
-  val PrivateKeyPemFilename = "privkey.pem"
+  /**
+    * The filename of the 'full chain' file in the LetsEncrypt certificate directory.
+    * This normally contains the root certificate all the way through intermediate certificates
+    * and to our own certificate. Let's Encrypt only has 2, but no guarantee that it will
+    * continue the case.
+    */
+  val LetsEncryptFullChainPemFilename = "fullchain.pem"
+
+  /**
+    * The filename of the 'private key' file in the LetsEncrypt certificate directory.
+    *
+    * Try to restrict access to this as much as you possibly can because this
+    * you don't want to get in the wrong hands.
+    *
+    * When setting up on Linux environments, there is a good chance that
+    * you would need to share this file with your Java application,
+    * and the easiest way to give that access is to use a command `setfacl -m u:javaappuser:r /path/to/privkey.pem`,
+    * so that you can give access to ''javaappuser'' for this file specifically.
+    */
+  val LetsEncryptPrivateKeyPemFilename = "privkey.pem"
 
   private def loadPrivateKey[F[_]: Sync](
       certificateDirectory: Path): Resource[F, Array[Byte]] = {
     val privateKeyPath =
-      certificateDirectory.resolve(PrivateKeyPemFilename).toAbsolutePath
+      certificateDirectory
+        .resolve(LetsEncryptPrivateKeyPemFilename)
+        .toAbsolutePath
     loadChain(privateKeyPath)
       .map(
         _.headOption.getOrElse(
@@ -142,7 +173,9 @@ object LetsEncryptFS2 {
   private def loadCertificateChain[F[_]: Sync](
       certificateDirectory: Path): Resource[F, List[Array[Byte]]] = {
     val chainPath =
-      certificateDirectory.resolve(FullChainPemFile).toAbsolutePath
+      certificateDirectory
+        .resolve(LetsEncryptFullChainPemFilename)
+        .toAbsolutePath
     loadChain(chainPath).map(
       _.ensuring(_.nonEmpty,
                  s"Could not extract a single certificate from $chainPath"))

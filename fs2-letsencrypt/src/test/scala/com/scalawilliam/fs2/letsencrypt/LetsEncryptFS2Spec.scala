@@ -19,7 +19,7 @@ package com.scalawilliam.fs2.letsencrypt
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import cats.implicits.toTraverseOps
-import com.scalawilliam.fs2.letsencrypt.LetsEncryptFS2.EnvVarName
+import com.scalawilliam.fs2.letsencrypt.LetsEncryptFS2.DefaultEnvVarName
 import com.scalawilliam.fs2.letsencrypt.SecurityUtils.{
   extractDER,
   randomPassword
@@ -34,7 +34,7 @@ final class LetsEncryptFS2Spec extends AnyFreeSpec {
 
   private def testKeyStoreName: String = "KeyStore is populated correctly"
 
-  if (sys.env.contains(EnvVarName)) {
+  if (sys.env.contains(DefaultEnvVarName)) {
     testKeyStoreName in {
       val pass     = "test".toCharArray
       val keyStore = KeyStore.getInstance("PKCS12")
