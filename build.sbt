@@ -10,13 +10,13 @@ ThisBuild / version := "0.60.1-SNAPSHOT"
 ThisBuild / publishTo := {
   val nexus = "https://oss.sonatype.org/"
 //  if (isSnapshot.value)
-//  Some("snapshots" at nexus + "content/repositories/snapshots")
+  Some("snapshots" at nexus + "content/repositories/snapshots")
 //  else
-  Some("releases" at nexus + "service/local/staging/deploy/maven2")
+//  Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
 ThisBuild / scalaVersion := "2.13.5"
-ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.3" % "test"
+ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.7" % Test
 
 inThisBuild(
   List(
@@ -185,10 +185,18 @@ lazy val `doobie-postgres-json-circe-type` = project
 lazy val `fs2-letsencrypt` = project
   .enablePlugins(SiteScaladocPlugin)
   .settings(
-    version := "0.60.2",
+    scalacOptions := Nil,
+//    scalaVersion := "3.0.0-RC2",
+    version := "0.60.2-SNAPSHOT",
     versionScheme := Some("semver-spec"),
     libraryDependencies += "co.fs2"           %% "fs2-io"      % "3.0.1",
     libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"
+  )
+
+lazy val `http4s-browsersync` = project
+  .settings(
+    libraryDependencies ++= Seq("org.http4s" %% "http4s-dsl"  % http4sVersion,
+                                "org.http4s" %% "http4s-core" % http4sVersion)
   )
 
 Global / onChangedBuildSource := IgnoreSourceChanges
