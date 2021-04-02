@@ -195,6 +195,8 @@ lazy val `fs2-letsencrypt` = project
 
 lazy val `http4s-browsersync` = project
   .settings(
+    version := "0.60.2-SNAPSHOT",
+    versionScheme := Some("semver-spec"),
     libraryDependencies ++= Seq(
       "org.http4s"    %% "http4s-core"    % http4sVersion,
       "org.typelevel" %% "log4cats-core"  % "1.2.2",
