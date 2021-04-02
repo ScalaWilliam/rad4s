@@ -183,6 +183,7 @@ lazy val `doobie-postgres-json-circe-type` = project
   )
 
 lazy val `fs2-letsencrypt` = project
+  .enablePlugins(SiteScaladocPlugin)
   .settings(
     libraryDependencies += "co.fs2"           %% "fs2-io"      % "3.0.1",
     libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"

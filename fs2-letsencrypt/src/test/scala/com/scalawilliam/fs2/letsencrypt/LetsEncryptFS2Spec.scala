@@ -19,8 +19,8 @@ package com.scalawilliam.fs2.letsencrypt
 import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import cats.implicits.toTraverseOps
-import com.scalawilliam.fs2.letsencrypt.LetsEncryptFS2.{
-  EnvVarName,
+import com.scalawilliam.fs2.letsencrypt.LetsEncryptFS2.EnvVarName
+import com.scalawilliam.fs2.letsencrypt.SecurityUtils.{
   extractDER,
   randomPassword
 }
@@ -43,10 +43,10 @@ final class LetsEncryptFS2Spec extends AnyFreeSpec {
         .fromEnvironment[IO]
         .use(ls =>
           ls.addToKeyStore[IO](keyStore, pass).map { _ =>
-            assert(
-              keyStore.containsAlias(s"${LetsEncryptFS2.CertificateAlias}0"))
-            assert(
-              keyStore.containsAlias(s"${LetsEncryptFS2.CertificateAlias}1"))
+            assert(keyStore.containsAlias(
+              s"${LetsEncryptFS2.CertificateAliasPrefix}0"))
+            assert(keyStore.containsAlias(
+              s"${LetsEncryptFS2.CertificateAliasPrefix}1"))
             assert(keyStore.containsAlias(LetsEncryptFS2.PrivateKeyAlias))
         })
         .unsafeRunSync()

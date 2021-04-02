@@ -20,30 +20,82 @@ import cats.effect.kernel.Async
 import cats.effect.{Resource, Sync}
 import cats.implicits._
 import com.scalawilliam.fs2.letsencrypt.LetsEncryptFS2.{
-  CertificateAlias,
-  PrivateKeyAlias,
-  randomPassword
+  CertificateAliasPrefix,
+  PrivateKeyAlias
 }
+import com.scalawilliam.fs2.letsencrypt.SecurityUtils._
 import fs2.io.net.tls.TLSContext
-import org.bouncycastle.util.io.pem.PemReader
 
-import java.io.{ByteArrayInputStream, FileReader, Reader}
+import java.io.ByteArrayInputStream
 import java.nio.file.{Path, Paths}
 import java.security.cert.CertificateFactory
 import java.security.spec.PKCS8EncodedKeySpec
 import java.security.{KeyException, KeyFactory, KeyStore, PrivateKey}
 import javax.net.ssl.{KeyManagerFactory, SSLContext}
 
+/**
+  * LetsEncryptFS2 enables easy consumption of Let's Encrypt's certificates for enabling TLS in FS2 (and thus http4s) apps.
+  *
+  * When trying to set up a simple server for accepting Heroku's Syslogs over TCP+TLS, I could not fathom
+  * just how complicated it was to set up a simple KeyStore from Let's Encrypt's certificates.
+  * Does everyone go through that pain, or is that why perhaps everyone tends to use SSL termination by services like nginx?
+  *
+  * In any case, I couldn't see myself daring to update KeyStores manually every 90 days, nor could I see myself
+  * maintaining custom SSL configurations inside the many different apps that I have, so I realised this would make
+  * a great project that would benefit others massively in the Scala Typelevel world.
+  * http4s enables us to do rapid development, why don't we make deployment rapid as well?
+  *
+  * We can use things like nginx but they do complicate matters a lot as well; you can indeed
+  * simply either expose your app directly onto the network, or put it behind a load balancer with SSL passthrough.
+  * Now you get end-to-end powers where you have a lot more power and customisability, especially from security
+  * and HTTP/2 perspectives.
+  *
+  * All the certificates are picked up from the filesystem. You have 3 ways to specify the Let's Encrypt directory to use:
+  * - Via an environment variable 'LETSENCRYPT_CERT_DIR'
+  * - Via a System property 'letsencrypt.cert.dir',
+  * - Programmatically with a [[java.nio.file.Path]] - we leave this in case it is needed, for example, in corporate environments,
+  * where you may be fetching stuff based on a configuration option you fetch from elsewhere.
+  *
+  * All the file paths are normalised before reading, and then are read with BouncyCastle's PemReader.
+  *
+  * Once the certificates are successfully fetched, you can:
+  * - Get a standard [[javax.net.ssl.SSLContext]], so that you can use it in combination with libraries that are not FS2-TLS based.
+  *   For example, http4s-blaze will use SSLContext, but http4s-ember will use TLSContext.
+  * - Get an FS2's [[fs2.io.net.tls.TLSContext]], so that you can use it in http4s-ember.
+  *
+  * All the certificates are supplied as [[cats.effect.Resource]] types, so that all the clean-ups are taken care of for you.
+  * This also includes clearing out Arrays that should not retain passwords, private keys, and so forth, once they are no longer needed.
+  *
+  * This being a convenience library, these will be 2 most common use cases:
+  *
+  *  @example {{{
+  * LetsEncryptFS2
+  *   .fromEnvironment[IO]
+  *   .flatMap(_.tlsContextResource)
+  *   .flatMap(tlsContext => /* Combine with Network[IO], or integrate into Ember */ )
+  * }}}
+  *
+  * @example {{{
+  * LetsEncryptFS2
+  *   .fromEnvironment[IO]
+  *   .flatMap(_.sslContextResource)
+  *   .flatMap(sslContext => /* Combine with Blaze HTTP server, or a Java library or similar that consumes an SSLContext */ )
+  * }}}
+  */
 object LetsEncryptFS2 {
 
+  /**
+    * Load the certificate configuration from a directory specified.
+    */
   def fromLetsEncryptDirectory[F[_]: Sync](
       certificateDirectory: Path): Resource[F, LetsEncryptFS2] =
-    (loadChain(certificateDirectory), loadPrivateKey(certificateDirectory))
+    (loadCertificateChain(certificateDirectory),
+     loadPrivateKey(certificateDirectory))
       .mapN(new LetsEncryptFS2(_, _))
 
-  val FullChainPemFile      = "fullchain.pem"
-  val PrivateKeyPemFilename = "privkey.pem"
-
+  /** Load the certificate configuration from a directory specified as
+    * an environment variable or as a system property.
+    */
   def fromEnvironment[F[_]: Sync]: Resource[F, LetsEncryptFS2] =
     Resource
       .eval {
@@ -68,94 +120,41 @@ object LetsEncryptFS2 {
   val EnvVarName      = "LETSENCRYPT_CERT_DIR"
   val SysPropertyName = "letsencrypt.cert.dir"
 
-  private[letsencrypt] val PrivateKeyAlias  = "PrivateKeyAlias"
-  private[letsencrypt] val CertificateAlias = "CertificateAlias"
+  private[letsencrypt] val PrivateKeyAlias        = "PrivateKeyAlias"
+  private[letsencrypt] val CertificateAliasPrefix = "CertificateAlias"
 
-  private[letsencrypt] def extractDER(reader: => Reader): List[Array[Byte]] = {
-    val readerInstance = reader
-    try {
-      val pemReader = new PemReader(readerInstance)
-      try Iterator
-        .continually(Option(pemReader.readPemObject()))
-        .takeWhile(_.isDefined)
-        .flatten
-        .flatMap(o => Option(o.getContent))
-        .toList
-      finally pemReader.close()
-    } finally readerInstance.close()
-  }
+  val FullChainPemFile      = "fullchain.pem"
+  val PrivateKeyPemFilename = "privkey.pem"
 
   private def loadPrivateKey[F[_]: Sync](
-      certificateDirectory: Path): Resource[F, Array[Byte]] =
-    clearableByteArray[F] {
-      Sync[F].delay {
-        val privateKeyPath =
-          certificateDirectory.resolve(PrivateKeyPemFilename).toAbsolutePath
-        extractDER(new FileReader(privateKeyPath.toFile)).headOption
-          .getOrElse(
-            throw new KeyException(
-              s"Could not extract a private key from ${privateKeyPath}"
-            )
+      certificateDirectory: Path): Resource[F, Array[Byte]] = {
+    val privateKeyPath =
+      certificateDirectory.resolve(PrivateKeyPemFilename).toAbsolutePath
+    loadChain(privateKeyPath)
+      .map(
+        _.headOption.getOrElse(
+          throw new KeyException(
+            s"Could not extract a private key from ${privateKeyPath}"
           )
-      }
-    }
+        ))
+  }
 
-  private def loadChain[F[_]: Sync](
-      certificateDirectory: Path): Resource[F, List[Array[Byte]]] =
-    clearableListByteArray {
-      Sync[F].delay {
-        val chainPath =
-          certificateDirectory.resolve(FullChainPemFile).toAbsolutePath
-        extractDER(new FileReader(chainPath.toFile))
-          .ensuring(_.nonEmpty,
-                    s"Could not extract a single certificate from $chainPath")
-      }
-    }
-
-  private def clearableCharArray[F[_]: Sync](
-      f: F[Array[Char]]): Resource[F, Array[Char]] =
-    Resource.make(f)(array =>
-      Sync[F].delay {
-        java.util.Arrays.fill(array, '0')
-    })
-
-  private def clearableByteArray[F[_]: Sync](
-      f: F[Array[Byte]]): Resource[F, Array[Byte]] =
-    Resource.make(f)(array =>
-      Sync[F].delay {
-        java.util.Arrays.fill(array, 0.toByte)
-    })
-
-  private def clearableListByteArray[F[_]: Sync](
-      f: F[List[Array[Byte]]]): Resource[F, List[Array[Byte]]] =
-    Resource.make(f)(list =>
-      Sync[F].delay {
-        list.foreach(array => java.util.Arrays.fill(array, 0.toByte))
-    })
-
-  private val PrintableRange = 0x20 to 0x7E
-
-  private[letsencrypt] def randomPassword[F[_]: Sync]
-    : Resource[F, Array[Char]] =
-    Resource.eval(Sync[F].delay(16 + scala.util.Random.nextInt(20))).flatMap {
-      length =>
-        clearableCharArray[F] {
-          Sync[F].delay {
-            Array.fill(length) {
-              PrintableRange(
-                scala.util.Random.nextInt(PrintableRange.length - 1)).toChar
-            }
-          }
-        }
-    }
-
+  private def loadCertificateChain[F[_]: Sync](
+      certificateDirectory: Path): Resource[F, List[Array[Byte]]] = {
+    val chainPath =
+      certificateDirectory.resolve(FullChainPemFile).toAbsolutePath
+    loadChain(chainPath).map(
+      _.ensuring(_.nonEmpty,
+                 s"Could not extract a single certificate from $chainPath"))
+  }
 }
 
 final class LetsEncryptFS2(certificateChain: List[Array[Byte]],
                            privateKeyBytes: Array[Byte]) {
 
-  def addToKeyStore[F[_]: Sync](keyStore: KeyStore,
-                                withPassword: Array[Char]): F[Unit] =
+  private[letsencrypt] def addToKeyStore[F[_]: Sync](
+      keyStore: KeyStore,
+      withPassword: Array[Char]): F[Unit] =
     Sync[F].delay {
       val certificates = certificateChain.map { bytes =>
         CertificateFactory
@@ -164,7 +163,8 @@ final class LetsEncryptFS2(certificateChain: List[Array[Byte]],
       }
       certificates.zipWithIndex.foreach {
         case (certificate, index) =>
-          keyStore.setCertificateEntry(s"$CertificateAlias$index", certificate)
+          keyStore.setCertificateEntry(s"$CertificateAliasPrefix$index",
+                                       certificate)
       }
       keyStore.setKeyEntry(
         PrivateKeyAlias,
