@@ -1,7 +1,7 @@
 package com.scalawilliam
 
 import cats.effect.{ExitCode, IO, IOApp}
-import com.scalawilliam.fs2.letsencrypt.LetsEncryptFS2
+import com.scalawilliam.letsencrypt.LetsEncryptScala
 import org.http4s.HttpRoutes
 import org.http4s.implicits.http4sKleisliResponseSyntaxOptionT
 import org.http4s.server.blaze.BlazeServerBuilder
@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
 object LetsEncryptHttp4sSampleApp extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
     for {
-      crypto <- LetsEncryptFS2
+      crypto <- LetsEncryptScala
         .fromEnvironment[IO]
         .flatMap(_.sslContextResource[IO])
       server <- BlazeServerBuilder
