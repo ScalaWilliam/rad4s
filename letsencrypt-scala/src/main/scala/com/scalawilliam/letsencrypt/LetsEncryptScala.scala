@@ -32,21 +32,6 @@ import java.security.{KeyException, KeyFactory, KeyStore, PrivateKey}
 import javax.net.ssl.{KeyManagerFactory, SSLContext}
 
 /**
-  * LetsEncryptScala enables easy consumption of Let's Encrypt's certificates for enabling TLS in FS2 (and thus http4s) apps.
-  *
-  * When trying to set up a simple server for accepting Heroku's Syslogs over TCP+TLS, I could not fathom
-  * just how complicated it was to set up a simple KeyStore from Let's Encrypt's certificates.
-  * Does everyone go through that pain, or is that why perhaps everyone tends to use SSL termination by services like nginx?
-  *
-  * In any case, I couldn't see myself daring to update KeyStores manually every 90 days, nor could I see myself
-  * maintaining custom SSL configurations inside the many different apps that I have, so I realised this would make
-  * a great project that would benefit others massively in the Scala Typelevel world.
-  * http4s enables us to do rapid development, why don't we make deployment rapid as well?
-  *
-  * We can use things like nginx but they do complicate matters a lot as well; you can indeed
-  * simply either expose your app directly onto the network, or put it behind a load balancer with SSL passthrough.
-  * Now you get end-to-end powers where you have a lot more power and customisability, especially from security
-  * and HTTP/2 perspectives.
   *
   * All the certificates are picked up from the filesystem. You have 3 ways to specify the Let's Encrypt directory to use:
   * - Via an environment variable 'LETSENCRYPT_CERT_DIR'
@@ -59,7 +44,6 @@ import javax.net.ssl.{KeyManagerFactory, SSLContext}
   * Once the certificates are successfully fetched, you can:
   * - Get a standard [[javax.net.ssl.SSLContext]], so that you can use it in combination with libraries that are not FS2-TLS based.
   *   For example, http4s-blaze will use SSLContext, but http4s-ember will use TLSContext.
-  * - Get an FS2's fs2.io.net.tls.TLSContext, so that you can use it in http4s-ember.
   *
   * All the certificates are supplied as [[cats.effect.Resource]] types, so that all the clean-ups are taken care of for you.
   * This also includes clearing out Arrays that should not retain passwords, private keys, and so forth, once they are no longer needed.
@@ -69,16 +53,9 @@ import javax.net.ssl.{KeyManagerFactory, SSLContext}
   *  @example {{{
   * LetsEncryptScala
   *   .fromEnvironment[IO]
-  *   .flatMap(_.tlsContextResource)
-  *   .flatMap(tlsContext => /* Combine with Network[IO], or integrate into Ember */ )
+  *   .flatMap(sslContext => /* Use with fs2/http4s/other servers */ )
   * }}}
   *
-  *  @example {{{
-  * LetsEncryptScala
-  *   .fromEnvironment[IO]
-  *   .flatMap(_.sslContextResource)
-  *   .flatMap(sslContext => /* Combine with Blaze HTTP server, or a Java library or similar that consumes an SSLContext */ )
-  * }}}
   */
 object LetsEncryptScala {
 
