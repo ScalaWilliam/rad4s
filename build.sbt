@@ -187,11 +187,25 @@ lazy val `fs2-letsencrypt` = project
   .settings(
     scalacOptions := Nil,
 //    scalaVersion := "3.0.0-RC2",
-    version := "0.60.2-SNAPSHOT",
+    version := "0.60.3_fs2-SNAPSHOT",
     versionScheme := Some("semver-spec"),
-    libraryDependencies += "co.fs2"           %% "fs2-io"      % "3.0.1",
+    libraryDependencies += "co.fs2"           %% "fs2-io"      % "2.5.4",
     libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"
   )
+
+lazy val `http4s-letsencrypt-demo` = project
+  .dependsOn(`fs2-letsencrypt`)
+  .enablePlugins(JavaServerAppPackaging)
+  .settings({
+    val Http4sVersion = "0.21.21"
+    libraryDependencies ++= Seq(
+      "org.http4s" %% "http4s-dsl"          % Http4sVersion,
+      "org.http4s" %% "http4s-core"         % Http4sVersion,
+      "org.http4s" %% "http4s-scalatags"    % Http4sVersion,
+      "org.http4s" %% "http4s-server"       % Http4sVersion,
+      "org.http4s" %% "http4s-blaze-server" % Http4sVersion
+    )
+  })
 
 lazy val `http4s-browsersync` = project
   .settings(

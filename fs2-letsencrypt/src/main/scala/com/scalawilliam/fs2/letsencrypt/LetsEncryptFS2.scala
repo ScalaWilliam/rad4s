@@ -16,15 +16,14 @@
 
 package com.scalawilliam.fs2.letsencrypt
 
-import cats.effect.kernel.Async
-import cats.effect.{Resource, Sync}
+import cats.effect.{Async, Resource, Sync}
 import cats.implicits._
 import com.scalawilliam.fs2.letsencrypt.LetsEncryptFS2.{
   CertificateAliasPrefix,
   PrivateKeyAlias
 }
 import com.scalawilliam.fs2.letsencrypt.SecurityUtils._
-import fs2.io.net.tls.TLSContext
+import fs2.io.tls.TLSContext
 
 import java.io.ByteArrayInputStream
 import java.nio.file.{Path, Paths}
@@ -61,7 +60,7 @@ import javax.net.ssl.{KeyManagerFactory, SSLContext}
   * Once the certificates are successfully fetched, you can:
   * - Get a standard [[javax.net.ssl.SSLContext]], so that you can use it in combination with libraries that are not FS2-TLS based.
   *   For example, http4s-blaze will use SSLContext, but http4s-ember will use TLSContext.
-  * - Get an FS2's [[fs2.io.net.tls.TLSContext]], so that you can use it in http4s-ember.
+  * - Get an FS2's fs2.io.net.tls.TLSContext, so that you can use it in http4s-ember.
   *
   * All the certificates are supplied as [[cats.effect.Resource]] types, so that all the clean-ups are taken care of for you.
   * This also includes clearing out Arrays that should not retain passwords, private keys, and so forth, once they are no longer needed.
@@ -234,12 +233,5 @@ final class LetsEncryptFS2(certificateChain: List[Array[Byte]],
         }
       }
     } yield sslContext
-
-  def tlsContextResource[F[_]: Async]: Resource[F, TLSContext[F]] =
-    sslContextResource[F].map(
-      sslContext =>
-        TLSContext.Builder
-          .forAsync[F]
-          .fromSSLContext(sslContext))
 
 }
