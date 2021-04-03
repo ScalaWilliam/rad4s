@@ -9,7 +9,7 @@ import org.http4s.server.defaults
 
 import scala.concurrent.ExecutionContext
 
-object LetsEncryptHttp4s extends IOApp {
+object LetsEncryptHttp4sSampleApp extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
     for {
       crypto <- LetsEncryptFS2

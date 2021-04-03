@@ -182,19 +182,24 @@ lazy val `doobie-postgres-json-circe-type` = project
     )
   )
 
-lazy val `fs2-letsencrypt` = project
+lazy val `letsencrypt-scala` = project
   .enablePlugins(SiteScaladocPlugin)
   .settings(
     scalacOptions := Nil,
-//    scalaVersion := "3.0.0-RC2",
-    version := "0.60.3_fs2-SNAPSHOT",
+    version := "0.60.3-SNAPSHOT",
+    crossScalaVersions := Seq("2.13.5", "3.0.0-RC2"),
     versionScheme := Some("semver-spec"),
-    libraryDependencies += "co.fs2"           %% "fs2-io"      % "2.5.4",
+    libraryDependencies += {
+      val sv = scalaVersion.value
+      "org.typelevel" %% "cats-effect" % (if (sv.startsWith("3"))
+                                            "3.0.0"
+                                          else "2.4.1")
+    },
     libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"
   )
 
 lazy val `http4s-letsencrypt-demo` = project
-  .dependsOn(`fs2-letsencrypt`)
+  .dependsOn(`letsencrypt-scala`)
   .enablePlugins(JavaServerAppPackaging)
   .settings({
     val Http4sVersion = "0.21.21"
