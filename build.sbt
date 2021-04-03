@@ -192,7 +192,7 @@ lazy val `letsencrypt-scala` = project
     libraryDependencies += {
       val sv = scalaVersion.value
       "org.typelevel" %% "cats-effect" % (if (sv.startsWith("3"))
-                                            "3.0.0"
+                                            "3.0.1"
                                           else "2.4.1")
     },
     libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"

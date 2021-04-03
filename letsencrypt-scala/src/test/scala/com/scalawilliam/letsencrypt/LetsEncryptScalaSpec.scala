@@ -17,7 +17,6 @@
 package com.scalawilliam.letsencrypt
 
 import cats.effect.IO
-import cats.effect.unsafe.implicits.global
 import cats.implicits.toTraverseOps
 import com.scalawilliam.letsencrypt.LetsEncryptScala.DefaultEnvVarName
 import com.scalawilliam.letsencrypt.SecurityUtils.{extractDER, randomPassword}
