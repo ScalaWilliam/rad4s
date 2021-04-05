@@ -14,7 +14,6 @@ object BrowserSync {
   def logging[F[_]: Sync](logger: Logger[F]): F[Unit] =
     logger.debug(s"Pinging BrowserSync") *> BrowserSync
       .ping[F]
-      .attempt
       .flatMap {
         case Left(_: java.net.ConnectException) =>
           logger.error("Failed to connect to BrowserSync")
@@ -43,7 +42,8 @@ object BrowserSync {
         .exists(str => TruthyValues.contains(str))
     }
 
-  private def ping[F[_]](implicit syncF: Sync[F]): F[Unit] =
+  private def ping[F[_]](
+      implicit syncF: Sync[F]): F[Either[Throwable, String]] =
     syncF.attempt {
       syncF.delay {
         HttpClient
@@ -61,5 +61,5 @@ object BrowserSync {
           )
           .body()
       }
-    }.void
+    }
 }
