@@ -3,7 +3,7 @@ name := "rad4s"
 
 //ThisBuild / baseVersion := "0.60.0"
 
-ThisBuild / version := "0.60.1-SNAPSHOT"
+ThisBuild / version := "0.0.62"
 //ThisBuild / publishGithubUser := "ScalaWilliam"
 //ThisBuild / publishFullName := "ScalaWilliam"
 
@@ -184,8 +184,6 @@ lazy val `doobie-postgres-json-circe-type` = project
 
 lazy val `http4s-browsersync` = project
   .settings(
-    version := "0.60.2-SNAPSHOT",
-    versionScheme := Some("semver-spec"),
     libraryDependencies ++= Seq(
       "org.http4s"    %% "http4s-core"    % http4sVersion,
       "org.typelevel" %% "log4cats-core"  % "1.2.2",
@@ -194,3 +192,5 @@ lazy val `http4s-browsersync` = project
   )
 
 Global / onChangedBuildSource := IgnoreSourceChanges
+
+ThisBuild / versionScheme := Some("pvp")
