@@ -16,7 +16,7 @@ ThisBuild / publishTo := {
 }
 
 ThisBuild / scalaVersion := "2.13.5"
-ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.7" % Test
+ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.8" % Test
 
 inThisBuild(
   List(
@@ -47,12 +47,12 @@ lazy val mage = project
 
 lazy val `field-names` = project
   .settings(
-    libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.3",
+    libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.4",
     scalacOptions -= "-Xfatal-warnings"
 //    fatalWarningsInCI := false
   )
 
-val doobieVersion = "0.10.0"
+val doobieVersion = "0.13.1"
 lazy val `es1` = project
   .settings(
     libraryDependencies ++= Seq(
@@ -74,7 +74,7 @@ lazy val `chirps` = project
 lazy val magtags = project
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi"    %% "scalatags"    % "0.9.2",
+      "com.lihaoyi"    %% "scalatags"    % "0.9.4",
       "com.propensive" %% "magnolia"     % "0.17.0",
       "org.scala-lang" % "scala-reflect" % scalaVersion.value
     )
@@ -132,7 +132,7 @@ ThisBuild / scalacOptions ++= Seq(
   "-Ywarn-value-discard"
 )
 
-val http4sVersion = "0.21.15"
+val http4sVersion = "0.21.22"
 lazy val `http4s-resource-servlet` = project
   .settings(
     libraryDependencies ++= Seq(
@@ -181,36 +181,6 @@ lazy val `doobie-postgres-json-circe-type` = project
       "org.tpolecat" %% "doobie-postgres" % doobieVersion
     )
   )
-
-lazy val `letsencrypt-scala` = project
-  .enablePlugins(SiteScaladocPlugin)
-  .settings(
-    scalacOptions := Nil,
-    version := "0.60.3-SNAPSHOT",
-    crossScalaVersions := Seq("2.13.5", "3.0.0-RC2"),
-    versionScheme := Some("semver-spec"),
-    libraryDependencies += {
-      val sv = scalaVersion.value
-      "org.typelevel" %% "cats-effect" % (if (sv.startsWith("3"))
-                                            "3.0.1"
-                                          else "2.4.1")
-    },
-    libraryDependencies += "org.bouncycastle" % "bcprov-jdk16" % "1.46"
-  )
-
-lazy val `http4s-letsencrypt-demo` = project
-  .dependsOn(`letsencrypt-scala`)
-  .enablePlugins(JavaServerAppPackaging)
-  .settings({
-    val Http4sVersion = "0.21.21"
-    libraryDependencies ++= Seq(
-      "org.http4s" %% "http4s-dsl"          % Http4sVersion,
-      "org.http4s" %% "http4s-core"         % Http4sVersion,
-      "org.http4s" %% "http4s-scalatags"    % Http4sVersion,
-      "org.http4s" %% "http4s-server"       % Http4sVersion,
-      "org.http4s" %% "http4s-blaze-server" % Http4sVersion
-    )
-  })
 
 lazy val `http4s-browsersync` = project
   .settings(
