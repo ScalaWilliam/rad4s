@@ -3,7 +3,7 @@ name := "rad4s"
 
 //ThisBuild / baseVersion := "0.60.0"
 
-ThisBuild / version := "0.1.0"
+ThisBuild / version := "1.0.0"
 //ThisBuild / publishGithubUser := "ScalaWilliam"
 //ThisBuild / publishFullName := "ScalaWilliam"
 
