@@ -16,19 +16,18 @@
 
 package com.scalawilliam.rad4s.chirps
 
-import cats.effect.{ContextShift, IO, Resource}
+import cats.effect.IO
+import cats.effect.Resource
+import cats.effect.unsafe.implicits.global
 import com.scalawilliam.rad4s.chirps.CirceFileStorageSpec._
-import com.scalawilliam.rad4s.chirps.CircePureStorage.MLock
 import org.scalatest.Assertion
 import org.scalatest.funsuite.AnyFunSuite
 
-import java.nio.file.{Files, Path, Paths}
-import scala.concurrent.ExecutionContext
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 
 object CirceFileStorageSpec {
-
-  private implicit val cs: ContextShift[IO] =
-    IO.contextShift(ExecutionContext.global)
 
   def makeRandomName: IO[Path] = IO.delay {
     Paths.get(s"${Math.abs(scala.util.Random.nextInt())}.map")
@@ -36,12 +35,8 @@ object CirceFileStorageSpec {
 
   private val storageResource: Resource[IO, PureStorage[IO, Int]] = Resource
     .make(makeRandomName)(f => IO.delay(if (Files.exists(f)) Files.delete(f)))
-    .flatMap { path =>
-      Resource
-        .liftF(MLock.apply[IO])
-        .map(mlock =>
-          CircePureStorage.ensureSafe(mlock)(
-            CircePureStorage.make[IO, Int](path)))
+    .map { path =>
+      CircePureStorage.make[IO, Int](path)
     }
 
 }
@@ -77,6 +72,7 @@ final class CirceFileStorageSpec extends AnyFunSuite {
       }
       .map(oopt => assert(oopt.contains(5)))
   }
+
   def ioTest(name: String)(io: IO[Assertion]): Unit =
     test(name)(io.unsafeRunSync())
 

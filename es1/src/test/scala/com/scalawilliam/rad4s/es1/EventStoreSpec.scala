@@ -16,12 +16,13 @@
 
 package com.scalawilliam.rad4s.es1
 
+import cats.effect.unsafe.implicits.global
 import cats.effect.{IO, Resource}
 import com.scalawilliam.rad4s.es1.EventStore.Event
 import org.scalatest.Assertion
 import org.scalatest.funsuite.AnyFunSuite
 
-import java.nio.file.{Files, Path}
+import java.nio.file.{Path, Files}
 import java.time.Instant
 
 final class EventStoreSpec extends AnyFunSuite {

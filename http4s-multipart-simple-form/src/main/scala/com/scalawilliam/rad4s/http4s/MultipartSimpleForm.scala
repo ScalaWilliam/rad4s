@@ -21,6 +21,7 @@ import cats.effect.Sync
 import cats.implicits._
 import org.http4s.EntityDecoder
 import org.http4s.multipart.Multipart
+import org.typelevel.ci.CIStringSyntax
 
 final case class MultipartSimpleForm(items: Map[String, Vector[String]])
 
@@ -36,10 +37,10 @@ object MultipartSimpleForm {
         .filter(
           part =>
             part.headers
-              .get(org.http4s.headers.`Content-Disposition`)
+              .get[org.http4s.headers.`Content-Disposition`]
               .exists(disposition =>
                 disposition.dispositionType == "form-data"
-                  && !disposition.parameters.contains("filename"))
+                  && !disposition.parameters.contains(ci"filename"))
         )
         .flatMap { part =>
           part.name.map { partName =>

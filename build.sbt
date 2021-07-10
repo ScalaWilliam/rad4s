@@ -3,7 +3,7 @@ name := "rad4s"
 
 //ThisBuild / baseVersion := "0.60.0"
 
-ThisBuild / version := "0.0.62"
+ThisBuild / version := "0.1.0"
 //ThisBuild / publishGithubUser := "ScalaWilliam"
 //ThisBuild / publishFullName := "ScalaWilliam"
 
@@ -15,8 +15,8 @@ ThisBuild / publishTo := {
 //  Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
-ThisBuild / scalaVersion := "2.13.5"
-ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.8" % Test
+ThisBuild / scalaVersion := "2.13.6"
+ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test
 
 inThisBuild(
   List(
@@ -35,12 +35,13 @@ inThisBuild(
   ))
 publish / skip := true
 
-val catsVersion = "2.3.1"
+val catsVersion = "2.6.1"
+val ceVersion   = "3.1.1"
 lazy val mage = project
   .settings(
     libraryDependencies += "org.scala-lang" % "scala-reflect"  % scalaVersion.value,
     libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
-    libraryDependencies += "org.typelevel"  %% "cats-effect"   % catsVersion % Test,
+    libraryDependencies += "org.typelevel"  %% "cats-effect"   % ceVersion % Test,
     libraryDependencies += "org.typelevel"  %% "cats-core"     % catsVersion % Test,
     console / initialCommands := """import com.scalawilliam.rad4s.mage._"""
   )
@@ -52,13 +53,13 @@ lazy val `field-names` = project
 //    fatalWarningsInCI := false
   )
 
-val doobieVersion = "0.13.1"
+val doobieVersion = "1.0.0-M5"
 lazy val `es1` = project
   .settings(
     libraryDependencies ++= Seq(
       "org.tpolecat"  %% "doobie-core"     % doobieVersion,
       "org.tpolecat"  %% "doobie-postgres" % doobieVersion,
-      "org.typelevel" %% "cats-effect"     % catsVersion
+      "org.typelevel" %% "cats-effect"     % ceVersion
     ),
     circe
   )
@@ -66,7 +67,7 @@ lazy val `es1` = project
 lazy val `chirps` = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % catsVersion
+      "org.typelevel" %% "cats-effect" % ceVersion
     ),
     circe
   )
@@ -84,13 +85,13 @@ lazy val magtags = project
 lazy val chirps2 = project
   .settings(
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect" % catsVersion
+      "org.typelevel" %% "cats-effect" % ceVersion
     ),
     circe
   )
   .dependsOn(chirps)
 
-def circeVersion = "0.13.0"
+def circeVersion = "0.14.1"
 
 def circe =
   libraryDependencies ++= Seq(
@@ -132,7 +133,7 @@ ThisBuild / scalacOptions ++= Seq(
   "-Ywarn-value-discard"
 )
 
-val http4sVersion = "0.21.22"
+val http4sVersion = "0.23.0-RC1"
 lazy val `http4s-resource-servlet` = project
   .settings(
     libraryDependencies ++= Seq(
@@ -169,7 +170,7 @@ lazy val `http4s-jsoup-encoder` = project
   .settings(
     libraryDependencies ++= Seq(
       "org.http4s" %% "http4s-core" % http4sVersion,
-      "org.jsoup"  % "jsoup"        % "1.13.1"
+      "org.jsoup"  % "jsoup"        % "1.14.1"
     )
   )
 
@@ -186,8 +187,8 @@ lazy val `http4s-browsersync` = project
   .settings(
     libraryDependencies ++= Seq(
       "org.http4s"    %% "http4s-core"    % http4sVersion,
-      "org.typelevel" %% "log4cats-core"  % "1.2.2",
-      "org.typelevel" %% "log4cats-slf4j" % "1.2.2"
+      "org.typelevel" %% "log4cats-core"  % "2.1.1",
+      "org.typelevel" %% "log4cats-slf4j" % "2.1.1"
     )
   )
 

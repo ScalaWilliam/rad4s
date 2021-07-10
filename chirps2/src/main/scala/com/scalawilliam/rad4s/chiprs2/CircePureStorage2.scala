@@ -17,9 +17,7 @@
 package com.scalawilliam.rad4s.chiprs2
 
 import cats.effect.Sync
-import cats.effect.concurrent.Ref
 import com.scalawilliam.rad4s.chiprs2.CircePureStorage2.PureStorage
-import com.scalawilliam.rad4s.chirps.CircePureStorage.MLock
 import io.circe.jawn.JawnParser
 import io.circe.syntax._
 import io.circe.{Decoder, Encoder, Json}
@@ -39,30 +37,6 @@ object CircePureStorage2 {
   def make[F[_]: Sync, T: Encoder: Decoder](path: Path,
                                             initial: T): PureStorage[F, T] =
     CircePureStorage2(path, initial)
-
-  def ensureSafe[F[_], T](locker: MLock[F])(
-      pureStorage: PureStorage[F, T]): PureStorage[F, T] =
-    new PureStorage[F, T] {
-      override def modify(f: T => F[T]): F[T] =
-        locker.greenLight(pureStorage.modify(f))
-
-      override def read: F[T] = pureStorage.read
-
-      override def zero: T = pureStorage.zero
-    }
-
-  import cats.implicits._
-  def fromRef[F[_], T](ref: Ref[F, T], initial: T)(
-      implicit F: Sync[F]): PureStorage[F, T] =
-    new PureStorage[F, T] {
-      override def modify(f: T => F[T]): F[T] =
-        ref.get.flatMap(v => f(v)).flatMap(v => ref.set(v) *> F.pure(v))
-
-      override def read: F[T] =
-        ref.get
-
-      override def zero: T = initial
-    }
 
 }
 

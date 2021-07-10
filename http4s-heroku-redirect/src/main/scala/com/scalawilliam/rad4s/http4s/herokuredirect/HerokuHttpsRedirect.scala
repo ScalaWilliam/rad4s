@@ -20,17 +20,20 @@ import cats.data._
 import cats.effect.IO
 import org.http4s.Uri.RegName
 import org.http4s.dsl.io._
-import org.http4s.headers.{Host, Location}
-import org.http4s.util.CaseInsensitiveString
-import org.http4s.{HttpRoutes, Request, Uri}
+import org.http4s.headers.Host
+import org.http4s.headers.Location
+import org.http4s.HttpRoutes
+import org.http4s.Request
+import org.http4s.Uri
+import org.typelevel.ci.CIString
 
 object HerokuHttpsRedirect {
   val HeaderName = "X-Forwarded-Proto"
   val WhenSsl    = "https"
   def isSecure(request: Request[IO]): Boolean =
     request.headers
-      .get(CaseInsensitiveString(HeaderName))
-      .exists(_.value == WhenSsl)
+      .get(CIString(HeaderName))
+      .exists(_.exists(_.value == WhenSsl))
 
   def hostToUri(hostHeader: Host): Uri =
     Uri.apply(
@@ -48,7 +51,7 @@ object HerokuHttpsRedirect {
       else
         OptionT.liftF {
           req.headers
-            .get(Host)
+            .get[Host]
             .fold(Forbidden("No Host header found"))(header =>
               SeeOther(Location(hostToUri(header))))
         }

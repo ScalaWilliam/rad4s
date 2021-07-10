@@ -17,7 +17,7 @@
 package com.scalawilliam.rad4s.es1
 
 import cats.effect._
-import cats.effect.concurrent.Ref
+import cats.effect.Ref
 import cats.implicits._
 import com.scalawilliam.rad4s.es1.EventStore.Event
 

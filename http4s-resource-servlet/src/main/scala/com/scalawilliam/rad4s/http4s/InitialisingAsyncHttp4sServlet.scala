@@ -17,12 +17,16 @@
 package com.scalawilliam.rad4s.http4s
 
 import cats.data.Kleisli
-import cats.effect.concurrent.Ref
-import cats.effect.{ConcurrentEffect, IO, Resource}
-import cats.implicits._
+import cats.effect.IO
+import cats.effect.Ref
+import cats.effect.Resource
+import cats.effect.std.Dispatcher
+import cats.effect.unsafe.implicits.global
 import org.http4s.server.ServiceErrorHandler
-import org.http4s.servlet.{AsyncHttp4sServlet, ServletIo}
-import org.http4s.{HttpApp, Request}
+import org.http4s.servlet.AsyncHttp4sServlet
+import org.http4s.servlet.ServletIo
+import org.http4s.HttpApp
+import org.http4s.Request
 
 import javax.servlet.ServletConfig
 import scala.concurrent.duration.Duration
@@ -35,15 +39,16 @@ class InitialisingAsyncHttp4sServlet(
     cleanUpRef: Ref[IO, IO[Unit]] = Ref.unsafe(IO.unit),
     asyncTimeout: Duration = Duration.Inf,
     private[this] var servletIo: ServletIo[IO],
-    serviceErrorHandler: ServiceErrorHandler[IO]
-)(implicit C: ConcurrentEffect[IO])
-    extends AsyncHttp4sServlet[IO](
+    serviceErrorHandler: ServiceErrorHandler[IO],
+    dispatcher: Dispatcher[IO]
+) extends AsyncHttp4sServlet[IO](
       Kleisli { (i: Request[IO]) =>
         serviceRef.get.flatMap(f => f.apply(i))
       },
       asyncTimeout,
       servletIo,
-      serviceErrorHandler
+      serviceErrorHandler,
+      dispatcher
     ) {
 
   override def init(config: ServletConfig): Unit = {

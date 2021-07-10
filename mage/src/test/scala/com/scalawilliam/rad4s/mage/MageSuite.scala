@@ -17,6 +17,7 @@
 package com.scalawilliam.rad4s.mage
 
 import cats.effect.IO
+import cats.effect.unsafe.implicits.global
 import com.scalawilliam.rad4s.mage.MageSuite._
 import org.scalatest.funsuite.AnyFunSuite
 

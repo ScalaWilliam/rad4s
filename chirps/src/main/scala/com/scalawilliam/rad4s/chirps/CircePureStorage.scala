@@ -16,46 +16,21 @@
 
 package com.scalawilliam.rad4s.chirps
 
-import cats.effect.concurrent.{MVar, MVar2, Ref}
-import cats.effect.implicits._
-import cats.effect.{Concurrent, Sync}
-import cats.implicits._
+import cats.effect.Ref
+import cats.effect.Sync
 import io.circe.jawn.JawnParser
 import io.circe.syntax._
-import io.circe.{Decoder, Encoder, Json}
+import io.circe.Decoder
+import io.circe.Encoder
+import io.circe.Json
 
-import java.nio.file.{Files, Path}
+import java.nio.file.Files
+import java.nio.file.Path
 
 object CircePureStorage {
 
-  final class MLock[F[_]: Concurrent](mvar: MVar2[F, Unit]) {
-    def acquire: F[Unit] =
-      mvar.take
-
-    def release: F[Unit] =
-      mvar.put(())
-
-    def greenLight[A](fa: F[A]): F[A] =
-      acquire.bracket(_ => fa)(_ => release)
-  }
-
-  object MLock {
-    // todo PR to cats docs
-    def apply[F[_]: Concurrent]: F[MLock[F]] =
-      MVar[F].of(()).map(ref => new MLock(ref))
-  }
-
   def make[F[_]: Sync, T: Encoder: Decoder](path: Path): PureStorage[F, T] =
     CircePureStorage(path)
-
-  def ensureSafe[F[_], T](locker: MLock[F])(
-      pureStorage: PureStorage[F, T]): PureStorage[F, T] =
-    new PureStorage[F, T] {
-      override def modify(f: Option[T] => F[T]): F[T] =
-        locker.greenLight(pureStorage.modify(f))
-
-      override def read: F[Option[T]] = pureStorage.read
-    }
 
   import cats.implicits._
   def fromRef[F[_]: Sync, T](ref: Ref[F, T]): PureStorage[F, T] =
