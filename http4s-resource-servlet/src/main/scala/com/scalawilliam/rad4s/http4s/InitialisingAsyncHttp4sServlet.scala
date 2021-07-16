@@ -40,16 +40,19 @@ class InitialisingAsyncHttp4sServlet(
     asyncTimeout: Duration = Duration.Inf,
     private[this] var servletIo: ServletIo[IO],
     serviceErrorHandler: ServiceErrorHandler[IO],
-    dispatcher: Dispatcher[IO]
-) extends AsyncHttp4sServlet[IO](
-      Kleisli { (i: Request[IO]) =>
-        serviceRef.get.flatMap(f => f.apply(i))
-      },
-      asyncTimeout,
-      servletIo,
-      serviceErrorHandler,
-      dispatcher
-    ) {
+    dispatcher: Resource[IO, Dispatcher[IO]]
+) extends {
+  val (dispatcherInstance, closeDispatcher) =
+    dispatcher.allocated.unsafeRunSync()
+} with AsyncHttp4sServlet[IO](
+  Kleisli { (i: Request[IO]) =>
+    serviceRef.get.flatMap(f => f.apply(i))
+  },
+  asyncTimeout,
+  servletIo,
+  serviceErrorHandler,
+  dispatcherInstance
+) {
 
   override def init(config: ServletConfig): Unit = {
     super.init(config)
@@ -61,6 +64,7 @@ class InitialisingAsyncHttp4sServlet(
   override def destroy(): Unit = {
     super.destroy()
     cleanUpRef.get.flatten.unsafeRunSync()
+    closeDispatcher.unsafeRunSync()
   }
 
 }
