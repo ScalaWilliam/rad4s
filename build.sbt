@@ -3,7 +3,7 @@ name := "rad4s"
 
 //ThisBuild / baseVersion := "0.60.0"
 
-ThisBuild / version := "1.0.0"
+ThisBuild / version := "1.0.0-SNAPSHOT"
 //ThisBuild / publishGithubUser := "ScalaWilliam"
 //ThisBuild / publishFullName := "ScalaWilliam"
 
@@ -17,6 +17,10 @@ ThisBuild / publishTo := {
 
 ThisBuild / scalaVersion := "2.13.6"
 ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test
+
+val supportedScalaVersions = List("2.13.6", "3.0.1")
+
+val has3 = crossScalaVersions := supportedScalaVersions
 
 inThisBuild(
   List(
@@ -136,6 +140,8 @@ ThisBuild / scalacOptions ++= Seq(
 val http4sVersion = "0.23.0-RC1"
 lazy val `http4s-resource-servlet` = project
   .settings(
+    has3,
+    scalacOptions := Nil,
     libraryDependencies ++= Seq(
       "org.http4s"    %% "http4s-servlet"   % http4sVersion,
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
