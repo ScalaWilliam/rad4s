@@ -3,7 +3,7 @@ name := "rad4s"
 
 //ThisBuild / baseVersion := "0.60.0"
 
-ThisBuild / version := "1.0.1-SNAPSHOT"
+ThisBuild / version := "1.0.2-SNAPSHOT"
 //ThisBuild / publishGithubUser := "ScalaWilliam"
 //ThisBuild / publishFullName := "ScalaWilliam"
 
@@ -137,7 +137,7 @@ ThisBuild / scalacOptions ++= Seq(
   "-Ywarn-value-discard"
 )
 
-val http4sVersion = "0.23.0-RC1"
+val http4sVersion = "0.23.0"
 
 lazy val `http4s-resource-servlet` = project
   .settings(
