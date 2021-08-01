@@ -139,15 +139,6 @@ ThisBuild / scalacOptions ++= Seq(
 
 val http4sVersion = "0.23.0"
 
-lazy val `http4s-resource-servlet` = project
-  .settings(
-    scalacOptions := Nil,
-    libraryDependencies ++= Seq(
-      "org.http4s"    %% "http4s-servlet"   % http4sVersion,
-      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
-    )
-  )
-
 lazy val `http4s-heroku-redirect` = project
   .settings(
     libraryDependencies ++= Seq(
