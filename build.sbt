@@ -3,7 +3,7 @@ name := "rad4s"
 
 //ThisBuild / baseVersion := "0.60.0"
 
-ThisBuild / version := "1.0.2-SNAPSHOT"
+ThisBuild / version := "1.0.3-SNAPSHOT"
 //ThisBuild / publishGithubUser := "ScalaWilliam"
 //ThisBuild / publishFullName := "ScalaWilliam"
 
@@ -15,10 +15,10 @@ ThisBuild / publishTo := {
 //  Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
-ThisBuild / scalaVersion := "2.13.6"
+ThisBuild / scalaVersion := "2.13.8"
 ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.9" % Test
 
-val supportedScalaVersions = List("2.13.6", "3.0.1")
+val supportedScalaVersions = List("2.13.8", "3.0.1")
 
 val has3 = crossScalaVersions := supportedScalaVersions
 
@@ -57,7 +57,7 @@ lazy val `field-names` = project
 //    fatalWarningsInCI := false
   )
 
-val doobieVersion = "1.0.0-M5"
+val doobieVersion = "1.0.0-RC2"
 lazy val `es1` = project
   .settings(
     libraryDependencies ++= Seq(
